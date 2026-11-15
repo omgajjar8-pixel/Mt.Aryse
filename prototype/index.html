@@ -1,34 +1,1836 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mt. Aryse prototype</title>
-<style>
-body{margin:0;background:#F2F5F3;color:#15302A;font:17px/1.45 "Atkinson Hyperlegible",system-ui,sans-serif}
-main{max-width:440px;margin:0 auto;padding:24px 16px 40px}
-h1{font-size:28px;margin:0 0 6px} p{color:#4B6560;margin:0 0 18px}
-ol{padding:0;margin:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-a{display:block;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid #DCE5E1;color:#15302A;text-decoration:none;font-weight:700}
-.start{background:#1E4D40;color:#fff;border:none;text-align:center;margin-bottom:16px}
-.note{font-size:14px;margin-top:18px}
-</style></head><body><main>
-<h1>Mt. Aryse prototype</h1>
-<p>Clickable screens for testing. Tap through from the start, or jump to any screen. Sample data; not the real app.</p>
-<a class="start" href="onbwelcome.html">Start from the beginning</a>
-<ol>
-<li><a href="onbwelcome.html">Onboarding 1 · Welcome</a></li>
-<li><a href="onbexperience.html">Onboarding 2 · Experience</a></li>
-<li><a href="onblocation.html">Onboarding 3 · Location</a></li>
-<li><a href="trekpage.html">Trek page · Brahmatal</a></li>
-<li><a href="main.html">Now · A · One big answer</a></li>
-<li><a href="conceptb.html">Now · B · Card stack</a></li>
-<li><a href="conceptc.html">Now · C · Trail ribbon</a></li>
-<li><a href="maptab.html">Map tab</a></li>
-<li><a href="daytab.html">Day tab</a></li>
-<li><a href="looktab.html">Look tab · Peak finder</a></li>
-<li><a href="offtrail.html">Drifted off the trail</a></li>
-<li><a href="amscheck.html">How am I feeling?</a></li>
-<li><a href="diystart.html">DIY Day 1 · Start and join</a></li>
-<li><a href="diyroles.html">DIY Day 2 · Pick your role</a></li>
-<li><a href="diysweep.html">DIY Day 3 · Sweep's view</a></li>
-</ol>
-<p class="note">Trail playback with real GPS: <a href="../" style="display:inline;padding:0;border:none;background:none;text-decoration:underline">open it here</a>.</p>
-</main></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mt. Aryse</title>
+<meta name="description" content="Your trek mate, even with no network. Early prototype for testing.">
+<meta name="theme-color" content="#1E4D40">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mt. Aryse">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;700&display=swap">
+<style>/* Mt. Aryse prototype. One full-screen phone app, no frames. */
+
+:root {
+  --forest: #1E4D40;
+  --forest-deep: #133A30;
+  --forest-mid: #2E6656;
+  --forest-tint: #E6F0EB;
+  --amber: #E8A33D;
+  --amber-ink: #2A1A02;
+  --amber-tint: #FBF1DE;
+  --amber-line: #EED9AE;
+  --amber-text: #7A4E0E;
+  --bg: #F4F6F3;
+  --surface: #FFFFFF;
+  --ink: #15302A;
+  --muted: #536B65;
+  --faint: #8A9C97;
+  --line: #E0E7E3;
+  --line-strong: #C9D5D0;
+  --water: #21639A;
+  --water-tint: #E3EEF8;
+  --ok: #2F8A5B;
+  --ok-tint: #DCEFE4;
+  --ok-text: #1F5C3E;
+  --danger: #B3261E;
+  --danger-tint: #FBE7E5;
+
+  --font-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --pad: 20px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; background: var(--bg); }
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; }
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 6px; }
+[hidden] { display: none !important; }
+
+/* App frame: full-bleed on phones, a phone-width column on big screens */
+#app {
+  position: relative;
+  height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--bg);
+}
+@media (min-width: 600px) {
+  html, body { background: #DDE5E1; }
+  #app { height: min(100dvh, 920px); top: max(0px, calc((100dvh - 920px) / 2)); border-radius: 28px; box-shadow: 0 20px 60px rgba(19, 58, 48, .18); }
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.screen.dark { background: var(--forest); color: #fff; }
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar, .sheet-body::-webkit-scrollbar { display: none; }
+.pad { padding-left: var(--pad); padding-right: var(--pad); }
+.top-safe { padding-top: calc(var(--safe-top) + 12px); }
+
+/* Screen transitions */
+.enter-push { animation: push-in .32s var(--ease) both; }
+.enter-pop { animation: pop-in .32s var(--ease) both; }
+.enter-fade { animation: fade-in .2s ease-out both; }
+@keyframes push-in { from { transform: translateX(28%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pop-in { from { transform: translateX(-20%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Type */
+.display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.015em; line-height: 1.05; }
+.h1 { font-family: var(--font-display); font-weight: 700; font-size: 34px; line-height: 1.08; letter-spacing: -0.015em; }
+.h2 { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; }
+.h3 { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.lede { font-size: 17px; line-height: 1.5; color: var(--muted); }
+
+/* App bar */
+.appbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: calc(var(--safe-top) + 8px) 12px 8px;
+  min-height: calc(var(--safe-top) + 60px);
+  background: var(--bg);
+  position: relative; z-index: 2;
+}
+.appbar.over { position: absolute; left: 0; right: 0; top: 0; background: transparent; }
+.appbar .title { flex: 1; font-weight: 700; font-size: 17px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appbar .spacer { width: 44px; flex-shrink: 0; }
+.icon-btn {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 22px;
+  transition: background .15s, transform .1s;
+}
+.icon-btn:active { transform: scale(.94); background: rgba(21, 48, 42, .08); }
+.icon-btn.solid { background: var(--surface); box-shadow: 0 1px 2px rgba(21, 48, 42, .12), 0 0 0 1px var(--line); }
+.icon-btn.glass { background: rgba(255, 255, 255, .88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 1px 3px rgba(21, 48, 42, .15); }
+.icon { width: 24px; height: 24px; flex-shrink: 0; }
+.icon.sm { width: 18px; height: 18px; }
+.icon.lg { width: 28px; height: 28px; }
+
+/* Buttons */
+.btn {
+  min-height: 56px; padding: 0 22px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border-radius: var(--r-md);
+  font-size: 17px; font-weight: 700;
+  transition: transform .1s, filter .15s, background .15s;
+  text-decoration: none; user-select: none; -webkit-user-select: none;
+}
+.btn:active { transform: scale(.98); filter: brightness(.95); }
+.btn.block { width: 100%; }
+.btn.primary { background: var(--forest); color: #fff; }
+.btn.amber { background: var(--amber); color: var(--amber-ink); }
+.btn.secondary { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.btn.ghost { color: var(--forest); min-height: 48px; }
+.btn.ghost-light { color: #CFE3DA; min-height: 48px; font-weight: 700; }
+.btn.danger { background: var(--danger); color: #fff; }
+.btn.sm { min-height: 44px; font-size: 15px; padding: 0 16px; border-radius: var(--r-sm); }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+
+/* Sticky footer for primary actions */
+.footer {
+  padding: 12px var(--pad) calc(var(--safe-bottom) + 16px);
+  background: linear-gradient(to bottom, rgba(244, 246, 243, 0), var(--bg) 22%);
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative; z-index: 2;
+}
+.dark .footer { background: none; }
+.footer .note { display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; font-size: 14px; color: var(--muted); }
+.dark .footer .note { color: #BFD8CE; }
+
+/* Cards and lists */
+.card { background: var(--surface); border-radius: var(--r-lg); box-shadow: 0 0 0 1px var(--line); }
+.card.pad16 { padding: 16px; }
+.section { padding: 28px var(--pad) 0; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+.row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; min-height: 64px; width: 100%; text-align: left;
+  transition: background .15s;
+}
+button.row:active, a.row:active { background: #F0F4F2; }
+.list { background: var(--surface); border-radius: var(--r-lg); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+.list > * + * { border-top: 1px solid var(--line); }
+.row .grow { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.row .t { font-weight: 700; font-size: 16px; }
+.row .s { font-size: 14px; color: var(--muted); }
+.chev { color: var(--faint); }
+.tile {
+  width: 44px; height: 44px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: var(--forest-tint); color: var(--forest);
+}
+.tile.water { background: var(--water-tint); color: var(--water); }
+.tile.amber { background: #F5E0B5; color: #8A5A10; }
+.tile.danger { background: var(--danger-tint); color: var(--danger); }
+.tile.ok { background: var(--ok-tint); color: var(--ok-text); }
+
+/* Chips */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 999px;
+  font-size: 14px; font-weight: 700; white-space: nowrap;
+}
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.chip.open { background: var(--ok-tint); color: var(--ok-text); }
+.chip.rules { background: var(--amber-tint); color: var(--amber-text); }
+.chip.closed { background: #ECEFEE; color: #5B6B67; }
+.chip.on-dark { background: rgba(255, 255, 255, .16); color: #fff; }
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px var(--pad); margin: 0 calc(var(--pad) * -1); }
+.chips::-webkit-scrollbar { display: none; }
+.filter {
+  padding: 9px 16px; border-radius: 999px; font-size: 15px; font-weight: 700;
+  background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-strong); white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.filter[aria-pressed="true"] { background: var(--forest); color: #fff; box-shadow: none; }
+
+/* Tab bar */
+.tabbar {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  background: rgba(255, 255, 255, .96);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+  padding: 6px 6px calc(var(--safe-bottom) + 6px);
+  position: relative; z-index: 3;
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 2px; font-size: 12px; font-weight: 700; color: var(--faint);
+  border-radius: 12px; transition: color .15s;
+}
+.tab .pill { width: 56px; height: 30px; border-radius: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+.tab[aria-current="page"] { color: var(--ink); }
+.tab[aria-current="page"] .pill { background: var(--forest-tint); color: var(--forest); }
+
+/* Onboarding */
+.onb-illus { width: calc(100% + var(--pad) * 2); margin: 4px calc(var(--pad) * -1) 0; height: auto; display: block; }
+.step-dots { display: flex; gap: 6px; }
+.step-dots span { width: 22px; height: 4px; border-radius: 2px; background: var(--line-strong); }
+.step-dots span.on { background: var(--forest); }
+.choice {
+  display: flex; align-items: center; gap: 16px; width: 100%; text-align: left;
+  padding: 18px; border-radius: var(--r-lg); background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow .15s, background .15s, transform .1s;
+}
+.choice:active { transform: scale(.99); }
+.choice[aria-checked="true"] { box-shadow: inset 0 0 0 2px var(--forest); background: var(--forest-tint); }
+.radio { width: 24px; height: 24px; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--line-strong); flex-shrink: 0; transition: box-shadow .15s; }
+[aria-checked="true"] > .radio { box-shadow: inset 0 0 0 7px var(--forest); }
+.check-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.check-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; }
+.check-list .tick { width: 26px; height: 26px; border-radius: 13px; background: var(--ok-tint); color: var(--ok-text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Explore */
+.search {
+  display: flex; align-items: center; gap: 10px;
+  height: 52px; padding: 0 16px; border-radius: var(--r-md);
+  background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-strong); color: var(--muted);
+}
+.search input { border: 0; outline: 0; background: none; flex: 1; font-size: 17px; min-width: 0; color: var(--ink); }
+.carousel { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--pad); scrollbar-width: none; padding: 2px var(--pad) 4px; margin: 0 calc(var(--pad) * -1); }
+.carousel::-webkit-scrollbar { display: none; }
+.trek-card {
+  flex: 0 0 78%; scroll-snap-align: start; text-align: left;
+  background: var(--surface); border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line); transition: transform .12s;
+}
+.trek-card:active { transform: scale(.985); }
+.trek-card .art { display: block; width: 100%; height: 150px; overflow: hidden; }
+.trek-card .art svg { display: block; width: 100%; height: 100%; }
+.trek-card .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; }
+.trek-card .name { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.1; }
+.facts-line { font-size: 14px; color: var(--muted); }
+.trek-row .art { width: 64px; height: 64px; border-radius: 14px; overflow: hidden; flex-shrink: 0; }
+.trek-row .art svg { display: block; width: 100%; height: 100%; }
+
+/* Trek page */
+.hero { position: relative; }
+.hero svg { display: block; width: 100%; height: auto; }
+.hero .chip { position: absolute; left: var(--pad); bottom: 16px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+.facts > div { background: var(--surface); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.facts .k { font-size: 13px; color: var(--muted); }
+.facts .v { font-size: 17px; font-weight: 700; }
+.months { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.month {
+  padding: 10px 4px; border-radius: var(--r-sm); text-align: center;
+  background: var(--surface); box-shadow: inset 0 0 0 1px var(--line);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.month b { font-size: 15px; }
+.month span { font-size: 11.5px; color: var(--muted); }
+.month[aria-pressed="true"] { background: var(--forest); color: #fff; box-shadow: none; }
+.month[aria-pressed="true"] span { color: #CFE3DA; }
+.callout { padding: 14px 16px; border-radius: var(--r-md); background: var(--forest-tint); font-size: 15.5px; line-height: 1.5; }
+.callout.amber { background: var(--amber-tint); box-shadow: inset 0 0 0 1px var(--amber-line); }
+.daylist { position: relative; }
+.day { display: flex; gap: 14px; width: 100%; text-align: left; padding: 14px 16px; align-items: flex-start; }
+.day .num {
+  width: 32px; height: 32px; border-radius: 16px; flex-shrink: 0;
+  background: var(--forest-tint); color: var(--forest); font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+}
+.day .more { font-size: 15px; color: var(--ink); margin-top: 8px; line-height: 1.5; display: none; }
+.day[aria-expanded="true"] .more { display: block; }
+.day .chev { transition: transform .2s; margin-top: 4px; }
+.day[aria-expanded="true"] .chev { transform: rotate(90deg); }
+.peaks { display: flex; flex-wrap: wrap; gap: 8px; }
+.peak-chip { padding: 8px 14px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-strong); font-size: 15px; font-weight: 700; }
+.bullets { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.bullets li { display: flex; gap: 12px; font-size: 15.5px; line-height: 1.5; }
+.bullets li::before { content: ""; width: 6px; height: 6px; border-radius: 3px; background: var(--amber); margin-top: 9px; flex-shrink: 0; }
+.report { padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.report .who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.avatar { width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; flex-shrink: 0; }
+.source { font-size: 13px; color: var(--muted); }
+.banner { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--r-md); background: var(--amber-tint); box-shadow: inset 0 0 0 1px var(--amber-line); font-size: 15px; }
+
+/* Progress */
+.progress { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.progress > i { display: block; height: 100%; background: var(--forest); border-radius: 4px; transition: width .3s var(--ease); }
+.btn .progress { width: 100%; background: rgba(255, 255, 255, .25); }
+.btn .progress > i { background: #fff; }
+.ring { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+.ring svg { transform: rotate(-90deg); }
+.ring b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+/* Checklist rows */
+.check {
+  width: 28px; height: 28px; border-radius: 14px; flex-shrink: 0;
+  box-shadow: inset 0 0 0 2px var(--line-strong);
+  display: flex; align-items: center; justify-content: center; color: transparent;
+  transition: background .15s, box-shadow .15s;
+}
+.check.on { background: var(--ok); box-shadow: none; color: #fff; }
+
+/* On trail */
+.trail-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(var(--safe-top) + 12px) var(--pad) 4px; }
+.status-line { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ok-text); }
+.status-line .dot { width: 8px; height: 8px; border-radius: 4px; background: var(--ok); }
+.now-main { padding: 18px var(--pad) 8px; display: flex; flex-direction: column; gap: 4px; }
+.now-name { font-family: var(--font-display); font-weight: 700; font-size: 54px; line-height: 1; letter-spacing: -0.02em; }
+.now-time { font-family: var(--font-display); font-weight: 500; font-size: 32px; line-height: 1.15; }
+.now-time b { font-weight: 700; }
+.on-trail {
+  margin-top: 14px; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px 9px 12px;
+  border-radius: 999px; background: var(--ok-tint); color: var(--ok-text); font-size: 15px; font-weight: 700;
+}
+.on-trail .pulse { width: 10px; height: 10px; border-radius: 5px; background: var(--ok); box-shadow: 0 0 0 0 rgba(47, 138, 91, .5); animation: pulse 2s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(47, 138, 91, 0); } 100% { box-shadow: 0 0 0 0 rgba(47, 138, 91, 0); } }
+.drift {
+  margin: 14px var(--pad) 0; padding: 16px; border-radius: var(--r-lg);
+  background: var(--amber-tint); box-shadow: inset 0 0 0 1px var(--amber-line);
+  display: flex; flex-direction: column; gap: 12px; animation: fade-in .25s;
+}
+.drift .arrow { width: 52px; height: 52px; border-radius: 26px; background: var(--amber); color: var(--amber-ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.helper { font-size: 14px; color: var(--muted); padding: 8px 12px; background: rgba(30, 77, 64, .06); border-radius: 10px; margin-top: 8px; display: flex; gap: 8px; align-items: flex-start; }
+.heads { padding: 14px var(--pad) 0; display: flex; flex-direction: column; gap: 10px; }
+.head-card { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: var(--r-lg); background: var(--surface); box-shadow: 0 0 0 1px var(--line); text-align: left; width: 100%; }
+.head-card.warn { background: var(--amber-tint); box-shadow: inset 0 0 0 1px var(--amber-line); }
+.head-card .t { font-size: 17px; font-weight: 700; }
+.head-card .s { font-size: 14.5px; color: var(--muted); }
+.head-card.warn .s { color: #6B4E1C; }
+.profile { padding: 18px var(--pad) 0; }
+.profile .ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.profile svg { display: block; width: 100%; height: 64px; }
+.quick { display: flex; gap: 10px; padding: 16px var(--pad) 12px; }
+.quick .btn { min-height: 54px; font-size: 16px; padding: 0 16px; }
+
+/* Map */
+.map-wrap { position: relative; flex: 1; overflow: hidden; background: #E9EEE4; touch-action: none; }
+.map-wrap > svg { position: absolute; left: 50%; top: 50%; transform-origin: 0 0; }
+.map-top { position: absolute; left: 0; right: 0; top: 0; padding: calc(var(--safe-top) + 12px) 16px 0; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.map-top > * { pointer-events: auto; }
+.layer-chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.layer-chips::-webkit-scrollbar { display: none; }
+.layer {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px;
+  background: rgba(255, 255, 255, .94); box-shadow: 0 1px 3px rgba(21, 48, 42, .18); font-size: 14px; font-weight: 700; color: var(--muted);
+}
+.layer[aria-pressed="true"] { color: var(--ink); }
+.layer .sw { width: 10px; height: 10px; border-radius: 5px; opacity: .35; }
+.layer[aria-pressed="true"] .sw { opacity: 1; }
+.map-side { position: absolute; right: 16px; bottom: 132px; display: flex; flex-direction: column; gap: 10px; }
+.map-card { position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 16px; border-radius: var(--r-lg); background: var(--surface); box-shadow: 0 4px 20px rgba(21, 48, 42, .16); display: flex; align-items: center; gap: 14px; }
+.you { animation: you 2s infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes you { 0% { transform: scale(1); opacity: .5; } 100% { transform: scale(3.2); opacity: 0; } }
+
+/* Day */
+.day-pick { display: flex; gap: 8px; }
+.day-pick button { flex: 1; height: 48px; border-radius: var(--r-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-weight: 700; font-size: 16px; }
+.day-pick button[aria-pressed="true"] { background: var(--forest); color: #fff; box-shadow: none; }
+.day-pick button.today::after { content: ""; display: block; width: 5px; height: 5px; border-radius: 3px; background: var(--amber); margin: 2px auto 0; }
+
+/* Look */
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 4px; border-radius: 14px; background: rgba(255, 255, 255, .14); }
+.seg button { height: 40px; border-radius: 10px; font-weight: 700; font-size: 15px; color: #DDE9E4; }
+.seg button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+.seg.light { background: #E6ECE9; }
+.seg.light button { color: var(--muted); }
+.seg.light button[aria-pressed="true"] { color: var(--ink); box-shadow: 0 1px 2px rgba(0, 0, 0, .1); }
+.pano { overflow-x: auto; scrollbar-width: none; flex: 1; position: relative; cursor: grab; }
+.pano::-webkit-scrollbar { display: none; }
+.pano svg { display: block; height: 100%; width: auto; }
+.reticle { position: absolute; left: 50%; top: 0; bottom: 0; width: 0; border-left: 1px dashed rgba(255, 255, 255, .5); pointer-events: none; }
+.look-sheet { background: var(--surface); color: var(--ink); border-radius: 24px 24px 0 0; padding: 18px var(--pad) 18px; display: flex; flex-direction: column; gap: 12px; }
+.listen {
+  width: 132px; height: 132px; border-radius: 66px; background: var(--amber); color: var(--amber-ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-weight: 700;
+  box-shadow: 0 0 0 0 rgba(232, 163, 61, .5); transition: transform .15s;
+}
+.listen.on { animation: listen 1.2s infinite; }
+@keyframes listen { 0% { box-shadow: 0 0 0 0 rgba(232, 163, 61, .55); } 100% { box-shadow: 0 0 0 36px rgba(232, 163, 61, 0); } }
+.wave { display: flex; gap: 4px; align-items: center; height: 40px; }
+.wave i { width: 4px; border-radius: 2px; background: #CFE3DA; height: 8px; }
+.wave.on i { animation: wave .9s ease-in-out infinite; }
+@keyframes wave { 50% { height: 36px; } }
+
+/* AMS check */
+.q-opts { display: flex; flex-direction: column; gap: 10px; }
+.result { padding: 22px; border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 10px; }
+.result.fine { background: var(--ok-tint); }
+.result.mild { background: var(--amber-tint); box-shadow: inset 0 0 0 1px var(--amber-line); }
+.result.serious { background: var(--danger); color: #fff; }
+
+/* SOS */
+.sos-screen { background: #2A0F0D; color: #fff; }
+.sos-screen .card { background: rgba(255, 255, 255, .07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12); color: #fff; }
+.sos-screen .muted { color: #E7C6C2; }
+.coords { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 17px; letter-spacing: .02em; }
+
+/* DIY */
+.qr { width: 200px; height: 200px; padding: 14px; background: #fff; border-radius: 20px; box-shadow: 0 0 0 1px var(--line); }
+.people { display: flex; flex-wrap: wrap; gap: 8px; }
+.person { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: 15px; font-weight: 700; animation: fade-in .3s; }
+.person .avatar { width: 26px; height: 26px; font-size: 12px; }
+.role { display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: left; padding: 16px; border-radius: var(--r-lg); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.role[aria-checked="true"] { box-shadow: inset 0 0 0 2px var(--forest); background: var(--forest-tint); }
+.role[disabled] { opacity: .5; }
+
+/* Sheets, dialogs, toasts */
+.backdrop { position: absolute; inset: 0; background: rgba(12, 30, 25, .45); z-index: 20; animation: fade-in .2s; }
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 21;
+  max-height: 88%; display: flex; flex-direction: column;
+  background: var(--bg); border-radius: 26px 26px 0 0;
+  box-shadow: 0 -8px 40px rgba(12, 30, 25, .2);
+  animation: sheet-up .32s var(--ease);
+}
+.sheet.closing { animation: sheet-down .22s ease-in forwards; }
+.backdrop.closing { animation: fade-out .22s forwards; }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes sheet-down { to { transform: translateY(100%); } }
+@keyframes fade-out { to { opacity: 0; } }
+.sheet .grab { width: 40px; height: 5px; border-radius: 3px; background: var(--line-strong); margin: 10px auto 2px; flex-shrink: 0; }
+.sheet .sheet-body { overflow-y: auto; scrollbar-width: none; padding: 12px var(--pad) calc(var(--safe-bottom) + 20px); display: flex; flex-direction: column; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: var(--muted); }
+.field input, .field textarea {
+  border: 0; border-radius: var(--r-sm); padding: 14px 16px; font-size: 17px; font-weight: 400;
+  background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-strong); color: var(--ink); outline: 0;
+}
+.field input:focus, .field textarea:focus { box-shadow: inset 0 0 0 2px var(--forest); }
+.field textarea { min-height: 110px; resize: none; line-height: 1.45; }
+.stars { display: flex; gap: 8px; }
+.stars button { flex: 1; height: 52px; border-radius: var(--r-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-strong); font-weight: 700; font-size: 17px; }
+.stars button[aria-pressed="true"] { background: var(--forest); color: #fff; box-shadow: none; }
+.toast {
+  position: absolute; left: 50%; bottom: calc(var(--safe-bottom) + 104px); z-index: 30;
+  transform: translateX(-50%); width: max-content; max-width: calc(100% - 40px);
+  padding: 12px 18px; border-radius: 14px; background: var(--ink); color: #fff;
+  font-size: 15px; font-weight: 700; box-shadow: 0 6px 24px rgba(0, 0, 0, .25);
+  display: flex; align-items: center; gap: 10px; animation: toast-in .25s var(--ease);
+}
+.toast.out { animation: fade-out .2s forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* Misc */
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 48px 28px; }
+.stack { display: flex; flex-direction: column; }
+.gap4 { gap: 4px; } .gap6 { gap: 6px; } .gap8 { gap: 8px; } .gap10 { gap: 10px; } .gap12 { gap: 12px; } .gap16 { gap: 16px; } .gap20 { gap: 20px; }
+.hstack { display: flex; align-items: center; }
+.between { justify-content: space-between; }
+.center { text-align: center; }
+.grow { flex: 1; }
+.mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; } .mt16 { margin-top: 16px; } .mt24 { margin-top: 24px; }
+.bottom-space { height: 28px; }
+.link-btn { color: var(--forest); font-weight: 700; font-size: 15px; padding: 8px 0; }
+.sample-tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--muted); background: #E9EEEB; padding: 2px 8px; border-radius: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>// Sample content for the prototype. Facts are drafts to check with trek leaders.
+
+const TREKS = [
+  {
+    id: "brahmatal", name: "Brahmatal", region: "Chamoli · Uttarakhand", ready: true,
+    status: { kind: "open", label: "Open · checked today" },
+    difficulty: "Easy–moderate", days: 6, km: 22, top: "12,250 ft", base: "Lohajung",
+    months: ["Nov", "Dec", "Jan", "Feb", "Mar"], firstTrek: true, size: 48,
+    summary: "Forest, ridge and two high lakes, with Trishul and Nanda Ghunti close all the way. One of the few treks open in deep winter.",
+    art: { seed: 7, sky: ["#BFD7E4", "#EAF1EE"], ridges: ["#9DB7C2", "#5E8478", "#2E6656", "#1E4D40"] },
+  },
+  {
+    id: "kedarkantha", name: "Kedarkantha", region: "Uttarkashi · Uttarakhand",
+    status: { kind: "open", label: "Open · checked 2 days ago" },
+    difficulty: "Easy–moderate", days: 6, km: 20, top: "12,500 ft", base: "Sankri",
+    months: ["Dec", "Jan", "Feb", "Mar", "Apr"], firstTrek: true,
+    summary: "A summit you can see from camp, pine forest the whole way up, and snow all winter. India's favourite first snow trek.",
+    art: { seed: 21, sky: ["#C9DCEB", "#F1F4F2"], ridges: ["#A9BFCB", "#6F8F8A", "#3A6B5C", "#22503F"] },
+  },
+  {
+    id: "dayara", name: "Dayara Bugyal", region: "Uttarkashi · Uttarakhand",
+    status: { kind: "open", label: "Open · checked 5 days ago" },
+    difficulty: "Easy", days: 6, km: 21, top: "12,000 ft", base: "Raithal",
+    months: ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Sep", "Oct"], firstTrek: true,
+    summary: "Some of India's widest high meadows. Gentle climbs, and big views of Bandarpoonch and Srikanth.",
+    art: { seed: 4, sky: ["#D6E3D5", "#F3F5EE"], ridges: ["#AFC2B7", "#86A68F", "#5B8A6A", "#3F6E52"] },
+  },
+  {
+    id: "kuari", name: "Kuari Pass", region: "Chamoli · Uttarakhand",
+    status: { kind: "open", label: "Open · checked 3 days ago" },
+    difficulty: "Easy–moderate", days: 6, km: 33, top: "12,516 ft", base: "Karchi",
+    months: ["Dec", "Jan", "Feb", "Mar", "Apr", "Oct", "Nov"], firstTrek: false,
+    summary: "An old trail across oak forest and open meadows, with Nanda Devi, Dronagiri and Kamet on the skyline.",
+    art: { seed: 13, sky: ["#D9D7E6", "#F4F2F1"], ridges: ["#B4B5C9", "#7F8FA0", "#4D6A70", "#2C4A4C"] },
+  },
+  {
+    id: "roopkund", name: "Roopkund", region: "Chamoli · Uttarakhand",
+    status: { kind: "rules", label: "Open with rules · guide required" },
+    difficulty: "Difficult", days: 8, km: 53, top: "15,750 ft", base: "Lohajung",
+    months: ["May", "Jun", "Sep", "Oct"], firstTrek: false,
+    summary: "The mystery lake high above Ali and Bedni Bugyal, two of India's biggest meadows. For fit trekkers with some experience.",
+    art: { seed: 33, sky: ["#E7D9C9", "#F5F1EA"], ridges: ["#C7B7A6", "#8D8A7B", "#5D6B5E", "#37483F"] },
+  },
+  {
+    id: "pangarchulla", name: "Pangarchulla Peak", region: "Chamoli · Uttarakhand",
+    status: { kind: "closed", label: "Closed for winter · opens in April" },
+    difficulty: "Difficult", days: 6, km: 26, top: "15,069 ft", base: "Tapovan",
+    months: ["Apr", "May", "Jun"], firstTrek: false,
+    summary: "A real summit day on snow, with the whole Garhwal range in front of you. Best after a few easier treks.",
+    art: { seed: 41, sky: ["#D3DEE6", "#F2F4F4"], ridges: ["#AFC0CB", "#7C94A0", "#4B6670", "#2A4048"] },
+  },
+];
+
+const BRAHMATAL = {
+  dates: "27 Nov – 2 Dec",
+  startsIn: 12,
+  fitness: { target: "Walk or jog 5 km in under 40 minutes", best: "Your best this month: 46 min", weeks: "About 4 weeks of training to go" },
+  monthNotes: {
+    Nov: { tag: "Clear views", text: "Days 10–15 °C, nights down to –5 °C. Bring 4 warm layers. No snow yet, and the clearest mountain views of the year." },
+    Dec: { tag: "Snow", text: "Days 5–10 °C, nights down to –8 °C. First snow on the ridge. Bring 5 warm layers and microspikes." },
+    Jan: { tag: "Deep snow", text: "Days 0–7 °C, nights down to –12 °C. Deep snow can block the top. Gaiters and microspikes needed." },
+    Feb: { tag: "Deep snow", text: "Days 2–8 °C, nights down to –10 °C. Snow all the way from Gujreni. Start each day early." },
+    Mar: { tag: "Rhodos", text: "Days 8–14 °C, nights around –3 °C. Snow melting, rhododendrons coming out in the forest." },
+  },
+  days: [
+    { n: 1, title: "Drive to Lohajung", line: "270 km from Rishikesh · 10–11 h",
+      more: "Leave Rishikesh by 5 am. The road follows the Alaknanda, then climbs through Debal. Lohajung has phone network and small shops for last-minute gloves and socks.",
+      expect: "A long day in the car. Sit on the left for river views. Eat light before the hill roads.",
+      tonight: "Guesthouse at Lohajung, 7,550 ft. Last hot shower and good network.",
+      peaks: ["Nanda Ghunti (first glimpse)"] },
+    { n: 2, title: "Lohajung → Gujreni", line: "4.5 km · about 5 h · up to 9,180 ft",
+      more: "Down to the stream first, then a steady climb through oak forest to the Gujreni clearing.",
+      expect: "Mostly forest and shade. The climb is steady, never steep. Water at the stream after the first hour.",
+      tonight: "Gujreni camp, in a clearing among oaks. Cold once the sun drops behind the ridge.",
+      peaks: ["Nanda Ghunti", "Trishul (from the clearing)"] },
+    { n: 3, title: "Gujreni → Tilandi", line: "2.9 km · 4–5 h · up to 10,495 ft · windy camp",
+      more: "A short day, mostly uphill. Trees thin out and you come up onto an open ridge.",
+      expect: "A short day but mostly uphill. Oak and rhododendron forest first, then the trees thin out and you come up onto an open ridge. Camp tonight is on that ridge.",
+      tonight: "Strong winds are common at Tilandi. Put on your windproof layer before the sun goes down, and keep your water bottle inside the tent so it doesn't freeze.",
+      story: { title: "Why it's called Lohajung", text: "Local legend says the goddess Parvati fought the demon Lohasur at your base village. “Jung” means battle." },
+      peaks: ["Mt Trishul", "Nanda Ghunti", "Ali Bugyal ridge"] },
+    { n: 4, title: "Tilandi → Brahmatal via the top", line: "6 km · 5–6 h · summit 12,250 ft",
+      more: "Start before sunrise for the top. Long ridge walk, then down to the frozen lake.",
+      expect: "The big day. Leave at 5 am with a headtorch. The ridge is exposed, so keep your layers on until the sun is up.",
+      tonight: "Camp by Brahmatal lake. Coldest night of the trek. Sleep with your phone and batteries inside your sleeping bag.",
+      story: { title: "The lake of Brahma", text: "Brahmatal is said to be where Brahma meditated. Locals still leave flowers at the small shrine by the water." },
+      peaks: ["Mt Trishul", "Nanda Ghunti", "Chaukhamba", "Neelkanth"] },
+    { n: 5, title: "Brahmatal → Lohajung", line: "8.45 km · 7–8 h · down to 7,550 ft",
+      more: "A long descent past Bekaltal lake and back through the forest to Lohajung.",
+      expect: "Mostly downhill, so go easy on your knees. Use poles. Water at Bekaltal.",
+      tonight: "Back at Lohajung. Network, a hot meal and a bed.",
+      peaks: ["Bekaltal lake", "Nanda Ghunti"] },
+    { n: 6, title: "Drive back to Rishikesh", line: "270 km · 10–11 h",
+      more: "Leave early. Expect to reach Rishikesh by evening. Keep a buffer day before your train or flight.",
+      expect: "Long drive back. Landslides can slow the road, so don't book a same-night train.",
+      tonight: "Rishikesh. Well done.",
+      peaks: [] },
+  ],
+  peaks: ["Mt Trishul", "Nanda Ghunti", "Chaukhamba", "Neelkanth", "Bekaltal lake"],
+  goodToKnow: [
+    "Tilandi camp gets strong winds. Keep a windproof layer on top.",
+    "In peak winter, deep snow can block the lake and the top. The ridge views still make the trek.",
+    "Mobile network in most of Lohajung. Expect none on the trail.",
+  ],
+  gettingThere: "Reach Rishikesh the day before Day 1. One direct bus leaves Rishikesh for Lohajung at 5 am and arrives around 5 pm. You can also go by shared jeep via Karnaprayag and Debal, or from Kathgodam.",
+  permits: { text: "Forest permit needed at Lohajung. Your trek company usually arranges it. Carry a photo ID.", source: "Mt. Aryse trek status · checked 15 Nov 2026 · Confirm at the Lohajung check-post" },
+  emergency: "The safest way out from any camp is back down to Lohajung. The nearest health centre is the PHC at Dewal, about 30 km away. For anything serious, go to Rudraprayag or Gopeshwar.",
+  reports: [
+    { name: "Priya", initial: "P", color: "#5B8A6A", when: "9 Nov", role: "Trekker, first Himalayan trek", text: "No snow yet but the views from the top were unreal. Tilandi was freezing at night, take the windproof seriously." },
+    { name: "Arjun", initial: "A", color: "#7F6BAA", when: "4 Nov", role: "Trek leader", text: "Water at the Gujreni stream is flowing well. Last good water before Tilandi is about 40 min above camp." },
+  ],
+};
+
+const PACKING = [
+  { group: "Warm layers", items: ["Thermal top and bottom", "Fleece", "Padded jacket", "Windproof shell", "Woollen cap and neck gaiter"] },
+  { group: "On your feet", items: ["Trekking shoes, worn in", "3 pairs of woollen socks", "Microspikes (Dec–Feb)"] },
+  { group: "Carry", items: ["2 water bottles, 1 litre each", "Headtorch and spare batteries", "Sunglasses (UV protection)", "Power bank", "Photo ID for the permit"] },
+];
+
+const CHECKS = [
+  { id: "download", title: "Trek downloaded", sub: "48 MB · works with no network", icon: "download", auto: true },
+  { id: "status", title: "Trek status checked", sub: "Open · checked today", icon: "shield", auto: true },
+  { id: "fitness", title: "Fitness", sub: "5 km in under 40 min", icon: "walk" },
+  { id: "packing", title: "Packing list", sub: "For November: 4 warm layers", icon: "bag" },
+  { id: "travel", title: "Travel plan", sub: "Reach Rishikesh by 26 Nov", icon: "bus" },
+  { id: "permits", title: "Permits and ID", sub: "Forest permit at Lohajung", icon: "doc" },
+  { id: "contacts", title: "Emergency contacts", sub: "Someone at home who knows your plan", icon: "users" },
+  { id: "offline", title: "Test it offline", sub: "Airplane mode, then open the map", icon: "plane" },
+];
+
+const PANO_PEAKS = [
+  { name: "Chaukhamba", m: 7138, km: 72, x: 230, h: 0.62 },
+  { name: "Neelkanth", m: 6596, km: 66, x: 430, h: 0.48 },
+  { name: "Nanda Ghunti", m: 6309, km: 24, x: 760, h: 0.70 },
+  { name: "Trishul", m: 7120, km: 26, x: 1010, h: 0.92 },
+  { name: "Mrigthuni", m: 6855, km: 31, x: 1250, h: 0.66 },
+];
+
+const BIRDS = [
+  { name: "Himalayan Monal", note: "Uttarakhand's state bird. Often heard at dawn on open slopes.", likely: "Very likely" },
+  { name: "Grey-winged Blackbird", note: "Rich, fluty song from the oak forest.", likely: "Possible" },
+];
+
+const AMS_QUESTIONS = [
+  { q: "Do you have a headache?", opts: ["No headache", "A little", "Quite bad", "Very bad, hard to bear"] },
+  { q: "How is your stomach?", opts: ["Eating fine", "Not hungry, or a bit sick", "Feeling sick, or threw up once", "Throwing up again and again"] },
+  { q: "Do you feel tired or weak?", opts: ["Not tired", "A little tired", "Quite tired", "Hardly able to move"] },
+  { q: "Do you feel dizzy?", opts: ["Not dizzy", "A little", "Quite dizzy", "Very dizzy, can't stand steady"] },
+];
+const AMS_WARNINGS = ["Confused, or very sleepy", "Can't walk in a straight line", "Breathless even when resting", "Cough with frothy or pink spit"];
+
+const DIY_PEOPLE = ["Rohan", "Meera", "Kabir", "Sana", "Dev", "Ira", "Nikhil", "Tara", "Aman"];
+const DIY_ROLES = [
+  { id: "lead", name: "Trek Lead", job: "Keeps the group together and makes the calls. Sets the pace for the slowest walker.", taken: "Rohan" },
+  { id: "nav", name: "Navigator", job: "Watches the map and the junctions. Gets an alert before tricky turns.", taken: "Kabir" },
+  { id: "sweep", name: "Sweep", job: "Walks last. Makes sure nobody is left behind." },
+  { id: "water", name: "Water Officer", job: "Knows where the next water is. Reminds everyone to fill up." },
+  { id: "safety", name: "Safety Officer", job: "Runs the altitude check for the group at each stop." },
+  { id: "nature", name: "Naturalist", job: "Names the peaks and birds, and tells the stories on the way." },
+];
+
+// Mt. Aryse prototype: a hash-routed single page app. No framework, no build step beyond inlining.
+
+/* ---------- helpers ---------- */
+
+const $app = document.getElementById("app");
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const trekById = (id) => TREKS.find((t) => t.id === id);
+const buzz = (ms = 10) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+const ICONS = {
+  back: '<path d="M15 18l-6-6 6-6"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  chev: '<path d="M9 6l6 6-6 6"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  explore: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  treks: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  tools: '<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>',
+  me: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>',
+  water: '<path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/>',
+  climb: '<path d="M3 19l6-8 4 5 3-3 5 6z"/>',
+  camp: '<path d="M2 20h20M12 5L4 20M12 5l8 15M12 13l-3 7M12 13l3 7"/>',
+  map: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  day: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  look: '<path d="M2 19l6-9 4 5 3-4 7 8z"/><circle cx="17" cy="6" r="2"/>',
+  now: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
+  group: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.2.6 3.5 2.8 3.5 6"/>',
+  heart: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>',
+  note: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  pin: '<path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  left: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  locate: '<circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  share: '<path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  signal: '<path d="M4 20v-3M9 20v-7M14 20v-11M19 20V5"/>',
+  shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  bag: '<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+  bus: '<rect x="4" y="3" width="16" height="14" rx="3"/><path d="M4 11h16M7 17v3M17 17v3"/><circle cx="8" cy="14" r=".6"/><circle cx="16" cy="14" r=".6"/>',
+  doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+  users: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/>',
+  plane: '<path d="M10.5 13.5L3 11V9l7.5 1V4.5a1.5 1.5 0 0 1 3 0V10L21 9v2l-7.5 2.5V18l2 1.5V21L12 20l-3.5 1v-1.5l2-1.5z"/>',
+  walk: '<circle cx="13" cy="4.5" r="2"/><path d="M9 21l2.5-6 2.5 2.5V21M8 12.5l2-4 3.5 1.5 2.5 3M11.5 15l1-6"/>',
+  bird: '<path d="M3 13c3 0 5-2 7-5 1-1.5 3-2.5 5-2.5 2.5 0 4 1.5 5 3l2 .5-2 1c0 5-4 9-10 9-3 0-5-1.5-6-3 2 0 4-.5 5-2-3 0-5-.5-6-1z"/>',
+  compass: '<circle cx="12" cy="12" r="9"/><path d="M12 6l2 6-2 6-2-6z"/>',
+  record: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+  file: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
+  battery: '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3"/><path d="M6 10v4"/>',
+  ruler: '<path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
+  chat: '<path d="M4 20l1.4-3.8A8 8 0 1 1 8.5 19z"/>',
+  restart: '<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/>',
+  storage: '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',
+  sos: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
+  sparkle: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  arrowUp: '<path d="M12 19V5M6 11l6-6 6 6"/>',
+  qr: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2"/>',
+};
+const icon = (name, cls = "", sw = 2) =>
+  `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
+
+/* ---------- state ---------- */
+
+const STORE = "mtaryse-proto-v1";
+const DEFAULT_STATE = {
+  onboarded: false, installSeen: false, experience: null, location: null,
+  downloaded: {}, checks: {}, packing: {}, contacts: [], notes: [],
+  offTrail: false, trailTipsSeen: false, units: "ft", batterySaver: false,
+  diy: null, visited: [], feedbackAsked: false,
+};
+let S = load();
+function load() {
+  try { return Object.assign({}, DEFAULT_STATE, JSON.parse(localStorage.getItem(STORE) || "{}")); }
+  catch (e) { return Object.assign({}, DEFAULT_STATE); }
+}
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }
+function set(patch) { Object.assign(S, patch); save(); }
+
+/* ---------- small UI pieces ---------- */
+
+let svgUid = 0;
+// Layered ridges drawn from a seed, so every trek gets its own landscape without photos.
+function art(trek, w = 400, h = 220) {
+  const a = trek.art, id = "a" + (++svgUid);
+  let seed = a.seed * 9301 + 49297;
+  const rand = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+  const ridge = (base, amp, rough) => {
+    const n = 64, ys = new Array(n + 1);
+    ys[0] = rand() * 0.5; ys[n] = rand() * 0.5;
+    for (let step = n, k = 0.6; step > 1; step /= 2, k *= rough) {
+      for (let i = step / 2; i < n; i += step) ys[i] = (ys[i - step / 2] + ys[i + step / 2]) / 2 + (rand() - 0.4) * k;
+    }
+    const lo = Math.min(...ys), hi = Math.max(...ys);
+    let d = `M0 ${h}`;
+    ys.forEach((v, i) => { d += ` L${((i / n) * w).toFixed(1)} ${(base - ((v - lo) / (hi - lo || 1)) * amp).toFixed(1)}`; });
+    return d + ` L${w} ${h} Z`;
+  };
+  const layers = [
+    { base: h * 0.66, amp: h * 0.5, n: 0.62 },
+    { base: h * 0.76, amp: h * 0.3, n: 0.55 },
+    { base: h * 0.88, amp: h * 0.24, n: 0.5 },
+    { base: h * 1.0, amp: h * 0.14, n: 0.45 },
+  ];
+  const far = ridge(layers[0].base, layers[0].amp, layers[0].n);
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a.sky[0]}"/><stop offset="1" stop-color="${a.sky[1]}"/></linearGradient>
+    <clipPath id="${id}c"><rect width="${w}" height="${h * 0.3}"/></clipPath>
+    <linearGradient id="${id}h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></linearGradient></defs>
+    <rect width="${w}" height="${h}" fill="url(#${id}s)"/>
+    <circle cx="${w * 0.78}" cy="${h * 0.22}" r="${h * 0.07}" fill="#fff" opacity=".7"/>
+    <path d="${far}" fill="${a.ridges[0]}"/>
+    <path d="${far}" fill="#fff" opacity=".92" clip-path="url(#${id}c)"/>
+    <rect y="${h * 0.3}" width="${w}" height="${h * 0.4}" fill="url(#${id}h)"/>
+    ${layers.slice(1).map((l, i) => `<path d="${ridge(l.base, l.amp, l.n)}" fill="${a.ridges[i + 1]}"/>`).join("")}
+  </svg>`;
+}
+
+const statusChip = (s) => `<span class="chip ${s.kind}"><span class="dot"></span>${esc(s.label)}</span>`;
+const appbar = (title = "", { back = "explore", right = "", over = false, close = false } = {}) => `
+  <header class="appbar ${over ? "over" : ""}">
+    <button class="icon-btn ${over ? "glass" : ""}" data-act="back" data-fallback="${back}" aria-label="${close ? "Close" : "Back"}">${icon(close ? "close" : "back")}</button>
+    <div class="title">${esc(title)}</div>
+    ${right || '<span class="spacer"></span>'}
+  </header>`;
+
+function tabbar(active) {
+  const tabs = [["explore", "Explore", "explore"], ["mytreks", "My treks", "treks"], ["tools", "Tools", "tools"], ["me", "Me", "me"]];
+  return `<nav class="tabbar" aria-label="Main">${tabs.map(([r, label, ic]) =>
+    `<button class="tab" data-go="${r}" data-replace="1" ${r === active ? 'aria-current="page"' : ""}><span class="pill">${icon(ic)}</span>${label}</button>`).join("")}</nav>`;
+}
+
+function trailbar(active) {
+  const tabs = [["now", "Now", "now"], ["map", "Map", "map"], ["day", "Day", "day"], ["look", "Look", "look"], ["group", "Group", "group"]];
+  return `<nav class="tabbar" aria-label="Trek view">${tabs.map(([r, label, ic]) =>
+    `<button class="tab" data-go="trail/${r}" data-replace="1" ${r === active ? 'aria-current="page"' : ""}><span class="pill">${icon(ic)}</span>${label}</button>`).join("")}</nav>`;
+}
+
+function toast(msg, ic = "check") {
+  document.querySelectorAll(".toast").forEach((t) => t.remove());
+  const t = document.createElement("div");
+  t.className = "toast"; t.setAttribute("role", "status");
+  t.innerHTML = `${icon(ic, "sm")}<span>${esc(msg)}</span>`;
+  $app.appendChild(t);
+  setTimeout(() => { t.classList.add("out"); setTimeout(() => t.remove(), 220); }, 2600);
+}
+
+let sheetCleanup = null;
+function sheet(html, mount) {
+  closeSheet(true);
+  const bd = document.createElement("div"); bd.className = "backdrop"; bd.dataset.act = "close-sheet";
+  const sh = document.createElement("div"); sh.className = "sheet"; sh.setAttribute("role", "dialog"); sh.setAttribute("aria-modal", "true");
+  sh.innerHTML = `<div class="grab" aria-hidden="true"></div><div class="sheet-body">${html}</div>`;
+  $app.append(bd, sh);
+  // Drag the handle down to close.
+  let y0 = null;
+  sh.addEventListener("touchstart", (e) => { if (sh.querySelector(".sheet-body").scrollTop <= 0) y0 = e.touches[0].clientY; }, { passive: true });
+  sh.addEventListener("touchmove", (e) => { if (y0 == null) return; const dy = e.touches[0].clientY - y0; if (dy > 0) sh.style.transform = `translateY(${dy}px)`; }, { passive: true });
+  sh.addEventListener("touchend", (e) => { if (y0 == null) return; const dy = e.changedTouches[0].clientY - y0; y0 = null; if (dy > 90) closeSheet(); else sh.style.transform = ""; });
+  sheetCleanup = mount ? mount(sh) : null;
+  const first = sh.querySelector("input, textarea, button:not(.grab)");
+  if (first && first.tagName !== "BUTTON") setTimeout(() => first.focus(), 300);
+  return sh;
+}
+function closeSheet(instant) {
+  const sh = $app.querySelector(".sheet"), bd = $app.querySelector(".backdrop");
+  if (!sh) return;
+  if (typeof sheetCleanup === "function") sheetCleanup();
+  sheetCleanup = null;
+  if (instant) { sh.remove(); bd && bd.remove(); return; }
+  sh.classList.add("closing"); bd && bd.classList.add("closing");
+  setTimeout(() => { sh.remove(); bd && bd.remove(); }, 220);
+}
+
+/* ---------- router ---------- */
+
+const ONBOARDING = ["install", "welcome", "experience", "location"];
+const TABS = ["explore", "mytreks", "tools", "me"];
+const DEPTH = { install: 0, welcome: 1, experience: 2, location: 3, explore: 5, mytreks: 5, tools: 5, me: 5, trek: 10, prepare: 11, trail: 20, "diy-start": 25, "diy-roles": 26, look: 12, ams: 30, sos: 30 };
+let stack = [];
+let current = null;
+let pendingReplace = false;
+const scrollMemory = {};
+
+function parse(hash) {
+  const parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  return { name: parts[0] || "", params: parts.slice(1), key: parts.join("/") };
+}
+
+function go(route, { replace = false } = {}) {
+  const hash = "#/" + route;
+  if (location.hash === hash) return;
+  pendingReplace = replace;
+  if (replace) location.replace(hash); else location.hash = hash;
+}
+
+function homeRoute() {
+  if (!S.onboarded) return isStandalone() || S.installSeen ? "welcome" : "install";
+  return "explore";
+}
+
+function render() {
+  let r = parse(location.hash);
+  if (!VIEWS[r.name]) { go(homeRoute(), { replace: true }); return; }
+  if (!S.onboarded && !ONBOARDING.includes(r.name)) { go(homeRoute(), { replace: true }); return; }
+
+  // Direction: popping back to the previous entry, or pushing a new one.
+  let dir = "push";
+  const at = stack.lastIndexOf(r.key);
+  if (pendingReplace && stack.length) { stack[stack.length - 1] = r.key; }
+  else if (at >= 0 && at < stack.length - 1) { stack = stack.slice(0, at + 1); dir = "pop"; }
+  else if (at < 0) stack.push(r.key);
+  pendingReplace = false;
+  if (stack.length > 40) stack = stack.slice(-40);
+
+  const prev = current;
+  if (prev) { const sc = $app.querySelector(".screen .scroll"); if (sc) scrollMemory[prev.key] = sc.scrollTop; }
+  const same = prev && prev.key === r.key;
+  const sameLevel = prev && ((TABS.includes(prev.name) && TABS.includes(r.name)) || (prev.name === "trail" && r.name === "trail"));
+  if (prev && !sameLevel) dir = DEPTH[r.name] < DEPTH[prev.name] ? "pop" : dir;
+
+  const view = VIEWS[r.name](...r.params);
+  closeSheet(true);
+  const el = document.createElement("div");
+  el.className = `screen ${view.cls || ""} ${same ? "" : !prev || sameLevel ? "enter-fade" : dir === "pop" ? "enter-pop" : "enter-push"}`;
+  el.innerHTML = view.html;
+  $app.querySelectorAll(".screen").forEach((s) => s.remove());
+  $app.appendChild(el);
+  current = r;
+
+  const theme = view.theme || (view.cls && view.cls.includes("dark") ? "#1E4D40" : "#F4F6F3");
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", theme);
+  document.documentElement.style.background = theme;
+  document.title = view.title ? `${view.title} · Mt. Aryse` : "Mt. Aryse";
+
+  const sc = el.querySelector(".scroll");
+  if (sc && (same || dir === "pop") && scrollMemory[r.key]) sc.scrollTop = scrollMemory[r.key];
+  if (!S.visited.includes(r.name)) { S.visited.push(r.name); save(); }
+  if (view.mount) view.mount(el);
+}
+
+/* ---------- views ---------- */
+
+const VIEWS = {};
+
+VIEWS.install = () => {
+  const ios = isIOS();
+  const steps = ios
+    ? [["share", "Tap the <b>Share</b> button in Safari"], ["plus", "Choose <b>Add to Home Screen</b>"], ["sparkle", "Open <b>Mt. Aryse</b> from your home screen"]]
+    : [["more", "Tap <b>⋮</b> at the top right of Chrome"], ["plus", "Choose <b>Install app</b> or <b>Add to Home screen</b>"], ["sparkle", "Open <b>Mt. Aryse</b> from your home screen"]];
+  return {
+    title: "Testing Mt. Aryse",
+    html: `<div class="scroll"><div class="pad top-safe stack gap20" style="padding-top:calc(var(--safe-top) + 40px)">
+      <img src="icon-192.png" width="72" height="72" alt="" style="border-radius:18px;box-shadow:0 6px 20px rgba(30,77,64,.25)">
+      <div class="stack gap10">
+        <h1 class="h1">Thanks for testing Mt. Aryse</h1>
+        <p class="lede">This is an early version, built to get your honest opinion. It takes about 5 minutes to try.</p>
+      </div>
+      <div class="card pad16 stack gap16">
+        <h2 class="h3">For the full app feel, add it to your home screen</h2>
+        <ol class="check-list" style="counter-reset:s">
+          ${steps.map(([ic, t], i) => `<li><span class="tick" style="background:var(--forest-tint);color:var(--forest);font-weight:700;font-size:14px">${i + 1}</span><span>${t}</span></li>`).join("")}
+        </ol>
+        <button class="btn primary block" id="install-btn" hidden>${icon("download")}Install app</button>
+      </div>
+      <p class="small muted">Treks, times and statuses are sample data for this test. Nothing you type leaves your phone unless you choose to send feedback.</p>
+    </div></div>
+    <div class="footer"><button class="btn secondary block" data-act="skip-install">Continue in the browser</button></div>`,
+    mount() {
+      const b = document.getElementById("install-btn");
+      if (window.__installPrompt) {
+        b.hidden = false;
+        b.onclick = async () => { window.__installPrompt.prompt(); const r = await window.__installPrompt.userChoice; window.__installPrompt = null; if (r.outcome === "accepted") toast("Installed. Open it from your home screen."); };
+      }
+    },
+  };
+};
+
+VIEWS.welcome = () => ({
+  cls: "dark", theme: "#1E4D40",
+  html: `<div class="scroll"><div class="pad stack gap16" style="padding-top:calc(var(--safe-top) + 24px)">
+      <span class="display" style="font-size:20px;letter-spacing:.01em">Mt. Aryse</span>
+      <svg class="onb-illus" viewBox="0 0 342 250" aria-hidden="true">
+        <defs><linearGradient id="wsun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3C677"/><stop offset="1" stop-color="#E8A33D"/></linearGradient></defs>
+        <circle cx="262" cy="62" r="26" fill="url(#wsun)" opacity=".9"/>
+        <path d="M0 196 L58 120 L88 146 L150 52 L198 118 L232 92 L300 160 L342 132 L342 250 L0 250 Z" fill="#2E6656"/>
+        <path d="M150 52 L172 86 L160 82 L150 96 L138 78 Z" fill="#E9EFF1"/>
+        <path d="M232 92 L246 112 L238 110 L230 118 L224 104 Z" fill="#E9EFF1" opacity=".9"/>
+        <path d="M0 226 L70 180 L120 204 L190 160 L262 198 L342 172 L342 250 L0 250 Z" fill="#245847"/>
+        <path d="M26 238 C76 220 112 214 142 190 C166 170 182 146 200 136" fill="none" stroke="#E8A33D" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 10"/>
+        <circle cx="200" cy="136" r="9" fill="#E8A33D" stroke="#1E4D40" stroke-width="3"/>
+        <defs><linearGradient id="wfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E4D40" stop-opacity="0"/><stop offset="1" stop-color="#1E4D40"/></linearGradient></defs>
+        <rect y="200" width="342" height="50" fill="url(#wfade)"/>
+      </svg>
+      <h1 class="display" style="font-size:40px;line-height:1.06">Your trek mate, even with no network</h1>
+      <ul class="check-list" style="color:#E3EEE9">
+        <li><span class="tick" style="background:rgba(255,255,255,.12);color:#F3C677">${icon("camp", "sm")}</span>How long to camp, and where the next water is</li>
+        <li><span class="tick" style="background:rgba(255,255,255,.12);color:#F3C677">${icon("day", "sm")}</span>Day-by-day plans for India's treks</li>
+        <li><span class="tick" style="background:rgba(255,255,255,.12);color:#F3C677">${icon("look", "sm")}</span>The names of the peaks around you</li>
+      </ul>
+    </div></div>
+    <div class="footer"><button class="btn amber block" data-go="experience">Get started</button><p class="note">Free during early access. No account needed.</p></div>`,
+});
+
+VIEWS.experience = () => {
+  const opts = [["first", "First time", "I've never done a Himalayan trek"], ["few", "A few times", "1 to 3 treks"], ["lots", "Lots", "I could lead one"]];
+  return {
+    title: "Your experience",
+    html: `${appbar("", { back: "welcome", right: '<div class="step-dots" aria-label="Step 1 of 2" style="padding-right:16px"><span class="on"></span><span></span></div>' })}
+      <div class="scroll"><div class="pad stack gap20" style="padding-top:8px">
+        <div class="stack gap10"><h1 class="h1">Have you trekked in the Himalayas before?</h1>
+        <p class="lede">We'll explain more or less depending on your answer. You can change this later.</p></div>
+        <div class="stack gap10" role="radiogroup" aria-label="Experience">
+          ${opts.map(([v, t, s]) => `<button class="choice" role="radio" aria-checked="${S.experience === v}" data-act="pick-exp" data-v="${v}"><span class="radio"></span><span class="stack"><span class="h3">${t}</span><span class="small muted">${s}</span></span></button>`).join("")}
+        </div>
+      </div></div>
+      <div class="footer"><button class="btn primary block" data-go="location" id="exp-next" ${S.experience ? "" : "disabled"}>Continue</button></div>`,
+  };
+};
+
+VIEWS.location = () => ({
+  title: "Location",
+  html: `${appbar("", { back: "experience", right: '<div class="step-dots" aria-label="Step 2 of 2" style="padding-right:16px"><span class="on"></span><span class="on"></span></div>' })}
+    <div class="scroll"><div class="pad stack gap20" style="padding-top:8px">
+      <div class="tile ok" style="width:64px;height:64px;border-radius:20px">${icon("pin", "lg")}</div>
+      <div class="stack gap10"><h1 class="h1">Show where you are on the trail</h1>
+      <p class="lede">Your phone's GPS works with no network. We use it to show your spot on the map, tell you how long to camp, and warn you if you drift off the trail.</p></div>
+      <ul class="check-list">
+        <li><span class="tick">${icon("check", "sm", 2.5)}</span>Your location stays on your phone</li>
+        <li><span class="tick">${icon("check", "sm", 2.5)}</span>Only shared if you send an SOS or choose to share</li>
+        <li><span class="tick">${icon("check", "sm", 2.5)}</span>Battery saver mode for long days</li>
+      </ul>
+    </div></div>
+    <div class="footer"><button class="btn primary block" data-act="allow-location">Allow location</button><button class="btn ghost block" data-act="finish-onboarding">Not now, just browse treks</button></div>`,
+});
+
+VIEWS.explore = () => {
+  const first = TREKS.filter((t) => t.firstTrek);
+  const greeting = S.experience === "first" ? "Good first treks" : S.experience === "lots" ? "Open this month" : "Good treks for November";
+  return {
+    title: "Explore",
+    html: `<div class="scroll"><div class="pad top-safe" style="padding-top:calc(var(--safe-top) + 20px)">
+        <div class="stack gap4"><span class="eyebrow">Explore</span><h1 class="h1">Where to next?</h1></div>
+        <label class="search mt16">${icon("search")}<input id="q" type="search" placeholder="Search treks, like Kedarkantha" autocomplete="off" aria-label="Search treks"></label>
+      </div>
+      <div id="explore-default">
+        <section class="section"><div class="section-head"><h2 class="h2">${greeting}</h2></div>
+          <div class="carousel">${first.map(trekCard).join("")}</div>
+        </section>
+        <section class="section"><div class="section-head"><h2 class="h2">All treks</h2></div>
+          <div class="chips mt8" style="margin-bottom:12px" role="group" aria-label="Month">${["Any month", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"].map((m, i) => `<button class="filter" data-act="month" data-m="${m}" aria-pressed="${i === 0}">${m}</button>`).join("")}</div>
+          <div class="list" id="all-treks">${TREKS.map(trekRow).join("")}</div>
+          <p class="small muted mt12">Sample data for this test. Always confirm trek status at the check-post.</p>
+        </section>
+      </div>
+      <section class="section" id="results" hidden><div class="list"></div></section>
+      <div class="bottom-space"></div></div>${tabbar("explore")}`,
+    mount(el) {
+      const q = el.querySelector("#q"), def = el.querySelector("#explore-default"), res = el.querySelector("#results");
+      q.addEventListener("input", () => {
+        const v = q.value.trim().toLowerCase();
+        def.hidden = !!v; res.hidden = !v;
+        if (!v) return;
+        const hits = TREKS.filter((t) => (t.name + " " + t.region + " " + t.base).toLowerCase().includes(v));
+        res.querySelector(".list").innerHTML = hits.length ? hits.map(trekRow).join("")
+          : `<div class="empty"><h3 class="h3">No treks called "${esc(q.value)}" yet</h3><p class="small muted">We're starting with Uttarakhand. Tell us which trek you want next in Me → Send feedback.</p></div>`;
+      });
+    },
+  };
+};
+
+function trekCard(t) {
+  return `<button class="trek-card" data-go="trek/${t.id}"><span class="art">${art(t, 400, 190)}</span><span class="body">
+    ${statusChip(t.status).replace('class="chip', 'style="align-self:flex-start" class="chip')}
+    <span class="name">${t.name}</span><span class="facts-line">${t.difficulty} · ${t.days} days · up to ${t.top}</span></span></button>`;
+}
+function trekRow(t) {
+  return `<button class="row trek-row" data-go="trek/${t.id}" data-months="${t.months.join(",")}"><span class="art">${art(t, 120, 120)}</span>
+    <span class="grow"><span class="t">${t.name}</span><span class="s">${t.difficulty} · ${t.days} days · ${t.top}</span><span class="s" style="color:${t.status.kind === "open" ? "var(--ok-text)" : t.status.kind === "rules" ? "var(--amber-text)" : "var(--faint)"}">${esc(t.status.label.split(" · ")[0])}</span></span>
+    <span class="chev">${icon("chev", "sm")}</span></button>`;
+}
+
+VIEWS.trek = (id) => {
+  const t = trekById(id);
+  if (!t) return VIEWS.explore();
+  const B = BRAHMATAL, got = !!S.downloaded[t.id];
+  const facts = `<div class="facts"><div><span class="k">Difficulty</span><span class="v">${t.difficulty}</span></div><div><span class="k">Length</span><span class="v">${t.days} days · ${t.km} km</span></div><div><span class="k">Highest point</span><span class="v">${t.top}</span></div><div><span class="k">Base village</span><span class="v">${t.base}</span></div></div>`;
+  const head = `<div class="hero">${art(t, 400, 260)}${statusChip(t.status)}</div>
+    <div class="pad stack gap10" style="padding-top:18px"><span class="eyebrow">${t.region}</span><h1 class="display" style="font-size:40px">${t.name}</h1><p class="lede" style="color:var(--ink)">${t.summary}</p></div>
+    <div class="pad mt16">${facts}</div>`;
+
+  if (!t.ready) {
+    const closed = t.status.kind === "closed";
+    return {
+      title: t.name,
+      html: `${appbar("", { over: true })}<div class="scroll">${head}
+        <section class="section"><div class="banner">${icon("info")}<span>${closed ? `${t.name} is closed for winter. ` : ""}The full guide for ${t.name} is coming soon. We're checking day plans and water points with trek leaders first.</span></div></section>
+        <section class="section"><h2 class="h2" style="margin-bottom:12px">When to go</h2><div class="peaks">${t.months.map((m) => `<span class="peak-chip">${m}</span>`).join("")}</div></section>
+        <div class="bottom-space"></div></div>
+        <div class="footer"><button class="btn primary block" data-act="notify" data-name="${t.name}">Tell me when it's ready</button><button class="btn ghost block" data-go="trek/brahmatal">Try Brahmatal instead, it's ready</button></div>`,
+    };
+  }
+
+  return {
+    title: t.name,
+    html: `${appbar("", { over: true, right: `<button class="icon-btn glass" data-act="share-trek" aria-label="Share">${icon("share")}</button>` })}
+      <div class="scroll">${head}
+      <section class="section"><div class="card pad16 stack gap10">
+        <div class="hstack gap12"><div class="tile">${icon("walk")}</div><div class="stack"><span class="h3">Is this right for me?</span><span class="small muted">${t.difficulty} · good for first-timers who train</span></div></div>
+        <p>${B.fitness.target}.</p>
+        <div class="progress" aria-label="Training progress"><i style="width:62%"></i></div>
+        <p class="small muted">${B.fitness.best} <span class="sample-tag">sample</span> · ${B.fitness.weeks}.</p>
+        <button class="btn secondary sm" style="align-self:flex-start" data-act="plan">See a 6-week plan</button>
+      </div></section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">When to go</h2>
+        <div class="months" role="group" aria-label="Month">${Object.entries(B.monthNotes).map(([m, n], i) => `<button class="month" data-act="month-note" data-m="${m}" aria-pressed="${i === 0}"><b>${m}</b><span>${n.tag}</span></button>`).join("")}</div>
+        <p class="callout mt12" id="month-note">${B.monthNotes.Nov.text}</p>
+      </section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">Day by day</h2>
+        <div class="list">${B.days.map((d) => `<button class="day" data-act="toggle-day" aria-expanded="false"><span class="num">${d.n}</span><span class="grow stack"><span class="h3">${d.title}</span><span class="small muted">${d.line}</span><span class="more">${d.more}</span></span><span class="chev">${icon("chev", "sm")}</span></button>`).join("")}</div>
+      </section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">What you'll see</h2>
+        <div class="peaks">${B.peaks.map((p) => `<span class="peak-chip">${p}</span>`).join("")}</div>
+        <p class="small muted mt12">On the trail, point your camera at the skyline and Mt. Aryse names each peak.</p>
+      </section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">Good to know</h2><ul class="bullets">${B.goodToKnow.map((g) => `<li>${g}</li>`).join("")}</ul></section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">Getting there</h2><p style="font-size:15.5px;line-height:1.55">${B.gettingThere}</p></section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">Permits and rules</h2>
+        <div class="card pad16 stack gap8"><p style="font-size:15.5px">${B.permits.text}</p><p class="source">${B.permits.source}</p></div></section>
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">If something goes wrong</h2><p class="callout amber">${B.emergency}</p></section>
+      <section class="section"><div class="section-head"><h2 class="h2">From the trail</h2><span class="small muted">Last 2 weeks</span></div>
+        <div class="list">${B.reports.map((r) => `<div class="report"><div class="who"><span class="avatar" style="background:${r.color}">${r.initial}</span><span><b style="color:var(--ink)">${r.name}</b> · ${r.role} · ${r.when}</span></div><p style="font-size:15.5px">${r.text}</p></div>`).join("")}</div>
+        <button class="btn secondary block mt12" data-act="ask">Ask a question</button>
+      </section>
+      <div class="bottom-space"></div></div>
+      <div class="footer" id="trek-footer">${trekFooter(t, got)}</div>`,
+  };
+};
+
+function trekFooter(t, got) {
+  return got
+    ? `<button class="btn primary block" data-go="prepare/${t.id}">Get ready for this trek</button><p class="note">${icon("check", "sm")} On your phone · works offline</p>`
+    : `<button class="btn primary block" data-act="download" data-id="${t.id}">${icon("download")}Download for offline · ${t.size} MB</button><p class="note">Map, route, day plans and stories, all without network.</p>`;
+}
+
+function readiness() {
+  const done = CHECKS.filter((c) => c.auto || S.checks[c.id]).length;
+  return { done, total: CHECKS.length, pct: Math.round((done / CHECKS.length) * 100) };
+}
+const ring = (pct, size = 76, stroke = 8) => {
+  const r = (size - stroke) / 2, c = 2 * Math.PI * r;
+  return `<div class="ring" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#E0E7E3" stroke-width="${stroke}"/><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#1E4D40" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct / 100)}"/></svg><b>${pct}%</b></div>`;
+};
+
+VIEWS.mytreks = () => {
+  const mine = TREKS.filter((t) => S.downloaded[t.id]);
+  const rd = readiness();
+  return {
+    title: "My treks",
+    html: `<div class="scroll"><div class="pad" style="padding-top:calc(var(--safe-top) + 20px)"><div class="stack gap4"><span class="eyebrow">My treks</span><h1 class="h1">${mine.length ? "Coming up" : "Your treks"}</h1></div></div>
+      ${mine.length ? `<section class="section" style="padding-top:16px">${mine.map((t) => `
+        <button class="trek-card" style="width:100%" data-go="prepare/${t.id}"><span class="art">${art(t, 400, 170)}</span><span class="body">
+          <span class="hstack between gap12"><span class="stack gap4"><span class="name">${t.name}</span><span class="facts-line">${BRAHMATAL.dates} · starts in ${BRAHMATAL.startsIn} days</span></span>${ring(rd.pct, 64, 7)}</span>
+          <span class="small muted">${rd.done} of ${rd.total} ready · ${icon("check", "sm")} works offline</span></span></button>`).join("")}</section>`
+        : `<div class="empty"><div class="tile" style="width:64px;height:64px;border-radius:20px">${icon("download", "lg")}</div><h2 class="h2">No treks on your phone yet</h2><p class="muted">Download one before you leave the city, then everything works offline.</p><button class="btn primary mt8" data-go="explore" data-replace="1">Find a trek</button></div>`}
+      <section class="section"><h2 class="h2" style="margin-bottom:12px">Past treks</h2><div class="card pad16"><p class="muted">Your finished treks will show up here, with your route, photos and the peaks you saw.</p></div></section>
+      <div class="bottom-space"></div></div>${tabbar("mytreks")}`,
+  };
+};
+
+VIEWS.prepare = (id = "brahmatal") => {
+  const t = trekById(id), rd = readiness();
+  return {
+    title: `Prepare · ${t.name}`,
+    html: `${appbar(t.name, { back: "mytreks" })}
+      <div class="scroll"><div class="pad stack gap16" style="padding-top:4px">
+        <div class="card pad16 hstack gap16">${ring(rd.pct)}<div class="stack gap4"><span class="h3">${rd.pct === 100 ? "You're ready" : `${rd.total - rd.done} things left`}</span><span class="small muted">${BRAHMATAL.dates} · starts in ${BRAHMATAL.startsIn} days</span></div></div>
+        <div class="list">${CHECKS.map((c) => {
+          const on = c.auto || S.checks[c.id];
+          return `<button class="row" data-act="check-open" data-id="${c.id}" ${c.auto ? "disabled" : ""}><span class="check ${on ? "on" : ""}">${icon("check", "sm", 3)}</span><span class="grow"><span class="t">${c.title}</span><span class="s">${c.sub}</span></span>${c.auto ? "" : `<span class="chev">${icon("chev", "sm")}</span>`}</button>`;
+        }).join("")}</div>
+        <button class="row card" data-go="trek/${t.id}"><span class="tile">${icon("day")}</span><span class="grow"><span class="t">Trek guide</span><span class="s">Day by day, permits, getting there</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+      </div><div class="bottom-space"></div></div>
+      <div class="footer"><button class="btn amber block" data-act="start-trek">Start trek</button><p class="note">In the real app this appears when you reach ${t.base}.</p></div>`,
+  };
+};
+
+/* ----- on trail ----- */
+
+const TODAY = BRAHMATAL.days[2];
+
+VIEWS.trail = (tab = "now", arg) => (TRAIL[tab] || TRAIL.now)(arg);
+const TRAIL = {};
+
+const trailHead = (light = true) => `<div class="trail-head">
+  <div class="stack gap4"><span class="eyebrow">Brahmatal · Day 3 of 6</span><span class="status-line"><span class="dot"></span>Offline · all good</span></div>
+  <button class="icon-btn solid" data-act="exit-trail" aria-label="Leave trek view">${icon("close")}</button></div>`;
+
+TRAIL.now = () => {
+  const first = S.experience === "first";
+  const help = (txt) => first ? `<p class="helper">${icon("info", "sm")}<span>${txt}</span></p>` : "";
+  return {
+    title: "Now",
+    html: `<div class="scroll">${trailHead()}
+      <section class="now-main">
+        <span class="muted" style="font-size:16px">Next stop</span>
+        <h1 class="now-name">Tilandi</h1>
+        <p class="now-time">about <b>${S.offTrail ? "3 h 20 min" : "3 h 10 min"}</b></p>
+        <p class="muted" style="margin-top:6px">1.9 km left · mostly uphill · camp at 10,495 ft</p>
+        ${help("This is tonight's camp. The time is worked out for your walking pace and the climb, so it's an estimate, not a target.")}
+        ${S.offTrail ? "" : `<button class="on-trail" data-act="drift" aria-label="On the trail. Tap to preview drifting off the trail"><span class="pulse"></span>On the trail</button>`}
+      </section>
+      ${S.offTrail ? `<div class="drift" role="alert">
+          <div class="hstack gap12"><span class="arrow">${icon("left", "lg", 2.5)}</span><div class="stack"><span class="h3" style="font-size:19px">You may have drifted</span><span>The trail is 50 m to your left</span></div></div>
+          <p class="small" style="color:#6B4E1C">No rush. Walk back towards the path and this will clear.</p>
+          <div class="stack gap8"><button class="btn primary sm block" data-go="trail/map" data-replace="1">${icon("map", "sm")}Show me on the map</button><button class="btn secondary sm block" data-act="snooze">I'm with my guide</button></div>
+          <button class="link-btn" data-act="back-on-trail" style="align-self:flex-start;color:var(--amber-text)">Demo: walk back to the trail</button>
+        </div>` : ""}
+      <div class="heads">
+        <button class="head-card" data-go="trail/map" data-replace="1"><span class="tile water">${icon("water")}</span><span class="grow stack"><span class="t">Water in 40 min</span><span class="s">Small stream · treat before drinking</span></span></button>
+        <button class="head-card warn" data-go="trail/day" data-replace="1"><span class="tile amber">${icon("climb")}</span><span class="grow stack"><span class="t">Steep climb in 1 h</span><span class="s">Up to the ridge. Slow and steady.</span></span></button>
+      </div>
+      <section class="profile" aria-label="Today's climb"><div class="ends"><span>Gujreni 9,180 ft</span><span>Tilandi 10,495 ft</span></div>
+        <svg viewBox="0 0 350 64" preserveAspectRatio="none" role="img" aria-label="Elevation profile. You are about a third of the way."><path d="M0 58 C40 56 70 52 100 44 C130 36 150 26 180 21 C220 14 260 12 300 9 L350 7 L350 64 L0 64 Z" fill="#DCE8E3"/><path d="M0 58 C40 56 70 52 100 44 C130 36 150 26 180 21 C220 14 260 12 300 9 L350 7" fill="none" stroke="#1E4D40" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+        <div style="position:relative;height:0"><span style="position:absolute;left:32%;top:-30px;width:16px;height:16px;border-radius:8px;background:var(--amber);border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transform:translateX(-50%)"></span></div>
+      </section>
+      <div class="bottom-space"></div></div>
+      <div class="quick"><button class="btn secondary grow" data-go="ams">${icon("heart", "sm")}How am I feeling?</button><button class="btn secondary" data-act="note" aria-label="Add a note">${icon("note", "sm")}</button><button class="btn danger" data-go="sos">SOS</button></div>
+      ${trailbar("now")}`,
+    mount() { if (!S.trailTipsSeen) setTimeout(trailTips, 450); },
+  };
+};
+
+function trailTips() {
+  set({ trailTipsSeen: true });
+  sheet(`<h2 class="h2">You're on the trail</h2>
+    <p class="muted">We've dropped you on Day 3 of Brahmatal, between Gujreni and Tilandi. In the real app, this screen opens automatically with no network.</p>
+    <ul class="check-list">
+      <li><span class="tick">${icon("now", "sm")}</span><span><b>Now</b> answers one question: how long to camp.</span></li>
+      <li><span class="tick">${icon("left", "sm")}</span><span>Tap <b>On the trail</b> to see what happens if you drift off the path.</span></li>
+      <li><span class="tick">${icon("heart", "sm")}</span><span><b>How am I feeling?</b> is a 1-minute altitude check.</span></li>
+      <li><span class="tick">${icon("sos", "sm")}</span><span><b>SOS</b> is safe to try. Nothing is sent.</span></li>
+    </ul>
+    <button class="btn primary block" data-act="close-sheet">Got it</button>`);
+}
+
+TRAIL.map = () => ({
+  title: "Map", cls: "map-screen",
+  html: `<div class="map-wrap" id="map">${mapSvg()}
+      <div class="map-top">
+        <div class="hstack between"><span class="chip open" style="background:rgba(255,255,255,.94);box-shadow:0 1px 3px rgba(21,48,42,.18)"><span class="dot"></span>Offline map · all good</span><button class="icon-btn glass" data-act="exit-trail" aria-label="Leave trek view">${icon("close")}</button></div>
+        <div class="layer-chips" role="group" aria-label="Map layers">
+          ${[["water", "Water", "#21639A"], ["camps", "Camps", "#1E4D40"], ["hazards", "Hazards", "#C9821C"], ["network", "Network", "#7F6BAA"]].map(([k, l, c]) => `<button class="layer" data-act="layer" data-k="${k}" aria-pressed="true"><span class="sw" style="background:${c}"></span>${l}</button>`).join("")}
+        </div>
+      </div>
+      <div class="map-side"><button class="icon-btn glass" data-act="zoom" data-z="1.3" aria-label="Zoom in">${icon("plus")}</button><button class="icon-btn glass" data-act="zoom" data-z="0.77" aria-label="Zoom out">${icon("minus")}</button><button class="icon-btn glass" data-act="recenter" aria-label="Centre on me">${icon("locate")}</button></div>
+      ${S.offTrail ? `<div class="map-card" style="top:calc(var(--safe-top) + 112px);bottom:auto;background:var(--amber-tint);box-shadow:inset 0 0 0 1px var(--amber-line),0 4px 20px rgba(21,48,42,.16)"><span class="tile amber">${icon("left")}</span><span class="grow stack"><span class="h3">You may have drifted</span><span class="small" style="color:#6B4E1C">The trail is 50 m to your left</span></span></div>` : ""}
+      <div class="map-card"><span class="tile">${icon("camp")}</span><span class="grow stack"><span class="small muted">To Tilandi</span><span class="h3" style="font-size:20px">about ${S.offTrail ? "3 h 20 min" : "3 h 10 min"}</span><span class="small muted">1.9 km left · you're at about 9,600 ft</span></span></div>
+    </div>${trailbar("map")}`,
+  mount(el) { mapControls(el.querySelector("#map")); },
+});
+
+// Trail for Day 3 in map units (800 × 1000), drawn as a smooth curve.
+const MAP_PTS = [[170, 920], [220, 860], [255, 800], [245, 735], [300, 680], [365, 650], [385, 590], [352, 530], [404, 478], [474, 450], [505, 388], [482, 326], [534, 266], [592, 214], [606, 138]];
+const YOU_I = 5;
+function smoothPath(pts) {
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}`;
+  }
+  return d;
+}
+function contour(cx, cy, r, ph) {
+  let d = "";
+  for (let i = 0; i <= 48; i++) {
+    const a = (i / 48) * Math.PI * 2;
+    const rr = r * (1 + 0.16 * Math.sin(3 * a + ph) + 0.07 * Math.sin(5 * a + ph * 2));
+    d += (i ? " L" : "M") + (cx + Math.cos(a) * rr * 1.25).toFixed(1) + " " + (cy + Math.sin(a) * rr).toFixed(1);
+  }
+  return d + "Z";
+}
+function mapSvg() {
+  const hills = [[640, 110, 9, 0.4], [150, 260, 5, 1.7], [700, 640, 5, 2.6]];
+  let contours = "";
+  hills.forEach(([cx, cy, n, ph]) => { for (let k = n; k >= 1; k--) contours += `<path d="${contour(cx, cy, k * 52, ph + k * 0.08)}" fill="${k % 2 ? "#E3EADB" : "#E9EEE4"}" stroke="${k % 5 === 0 ? "#B9C4AE" : "#CDD6C3"}" stroke-width="${k % 5 === 0 ? 1.6 : 1}"/>`; });
+  const trail = smoothPath(MAP_PTS), walked = smoothPath(MAP_PTS.slice(0, YOU_I + 1));
+  const [ux, uy] = MAP_PTS[YOU_I];
+  const offX = S.offTrail ? ux + 52 : ux, offY = S.offTrail ? uy + 14 : uy;
+  const marker = (x, y, bg, ic, label, layer) => `<g data-layer="${layer}"><circle cx="${x}" cy="${y}" r="17" fill="${bg}" stroke="#fff" stroke-width="3"/><svg x="${x - 9}" y="${y - 9}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ICONS[ic]}</svg>${label ? `<text x="${x + 24}" y="${y + 5}" font-size="17" font-weight="700" fill="#15302A" stroke="#F4F6F0" stroke-width="4" paint-order="stroke">${label}</text>` : ""}</g>`;
+  return `<svg id="map-svg" width="800" height="1000" viewBox="0 0 800 1000" aria-label="Offline map of today's route">
+    <rect width="800" height="1000" fill="#EEF2EA"/>
+    <path d="M0 360 C120 330 200 420 300 400 C420 380 470 300 600 330 C700 350 760 420 800 400 L800 1000 L0 1000Z" fill="#DCE8D2" opacity=".7"/>
+    ${contours}
+    <path d="M60 1000 C140 900 260 640 420 600 C520 575 640 610 800 520" fill="none" stroke="#8DB8DA" stroke-width="5" stroke-linecap="round"/>
+    <text x="640" y="88" font-size="15" fill="#7C8A75" font-style="italic">Ali Bugyal ridge</text>
+    <path d="${trail}" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+    <path d="${trail}" fill="none" stroke="#1E4D40" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 10" />
+    <path d="${walked}" fill="none" stroke="#1E4D40" stroke-width="5.5" stroke-linecap="round"/>
+    ${marker(425, 598, "#21639A", "water", "Stream", "water")}
+    ${marker(474, 450, "#C9821C", "climb", "Steep climb", "hazards")}
+    ${marker(232, 760, "#7F6BAA", "signal", "Last network", "network")}
+    ${marker(170, 920, "#1E4D40", "camp", "Gujreni", "camps")}
+    ${marker(606, 138, "#1E4D40", "camp", "Tilandi", "camps")}
+    ${S.offTrail ? `<path d="M${offX} ${offY} L${ux} ${uy}" stroke="#C9821C" stroke-width="3" stroke-dasharray="6 6"/>` : ""}
+    <circle class="you" cx="${offX}" cy="${offY}" r="10" fill="${S.offTrail ? "#E8A33D" : "#2F80ED"}"/>
+    <circle cx="${offX}" cy="${offY}" r="11" fill="${S.offTrail ? "#E8A33D" : "#2F80ED"}" stroke="#fff" stroke-width="4"/>
+    <g transform="translate(740 210)"><circle r="20" fill="#fff" opacity=".9"/><path d="M0 -13 L6 4 L0 0 L-6 4Z" fill="#B3261E"/><text y="15" text-anchor="middle" font-size="10" font-weight="700" fill="#15302A">N</text></g>
+  </svg>`;
+}
+function mapControls(wrap) {
+  const svg = wrap.querySelector("#map-svg");
+  const [ux, uy] = MAP_PTS[YOU_I];
+  let s = 0.85, tx = 0, ty = 0;
+  const apply = () => { svg.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`; };
+  const center = () => { const r = wrap.getBoundingClientRect(); tx = r.width / 2 - ux * s; ty = r.height * 0.45 - uy * s; apply(); };
+  svg.style.left = "0"; svg.style.top = "0";
+  center();
+  let drag = null;
+  wrap.addEventListener("pointerdown", (e) => { if (e.target.closest("button")) return; drag = { x: e.clientX, y: e.clientY, tx, ty }; wrap.setPointerCapture(e.pointerId); });
+  wrap.addEventListener("pointermove", (e) => { if (!drag) return; tx = drag.tx + e.clientX - drag.x; ty = drag.ty + e.clientY - drag.y; apply(); });
+  wrap.addEventListener("pointerup", () => { drag = null; });
+  wrap.addEventListener("pointercancel", () => { drag = null; });
+  wrap.__zoom = (z) => {
+    const r = wrap.getBoundingClientRect(), cx = r.width / 2, cy = r.height / 2;
+    const ns = Math.min(2.4, Math.max(0.5, s * z));
+    tx = cx - ((cx - tx) / s) * ns; ty = cy - ((cy - ty) / s) * ns; s = ns;
+    svg.style.transition = "transform .2s"; apply(); setTimeout(() => (svg.style.transition = ""), 220);
+  };
+  wrap.__center = () => { svg.style.transition = "transform .25s"; center(); setTimeout(() => (svg.style.transition = ""), 260); };
+}
+
+TRAIL.day = (n) => {
+  const d = BRAHMATAL.days[(n || 3) - 1];
+  return {
+    title: "Day",
+    html: `<div class="scroll">${trailHead()}
+      <div class="pad stack gap16" style="padding-top:14px">
+        <div class="day-pick" role="group" aria-label="Day">${BRAHMATAL.days.map((x) => `<button data-act="pick-day" data-n="${x.n}" aria-pressed="${x.n === d.n}" class="${x.n === 3 ? "today" : ""}" aria-label="Day ${x.n}${x.n === 3 ? ", today" : ""}">${x.n}</button>`).join("")}</div>
+        <div class="stack gap4"><span class="eyebrow">Day ${d.n} of 6${d.n === 3 ? " · today" : ""}</span><h1 class="h1">${d.title.replace("→", "to")}</h1><p class="muted">${d.line}</p></div>
+        <div class="card pad16 stack gap8"><h2 class="h3">What to expect</h2><p style="font-size:15.5px;line-height:1.55">${d.expect}</p></div>
+        <div class="callout amber stack gap6"><b>Tonight</b><span>${d.tonight}</span></div>
+        ${d.story ? `<div class="card pad16 stack gap8"><span class="eyebrow" style="color:var(--amber-text)">Story nearby${d.n === 3 ? " · unlocks on the ridge" : ""}</span><h2 class="h3">${d.story.title}</h2><p style="font-size:15.5px;line-height:1.55">${d.story.text}</p></div>` : ""}
+        ${d.peaks.length ? `<div class="stack gap10"><h2 class="h3">Peaks you can see</h2><div class="peaks">${d.peaks.map((p) => `<span class="peak-chip">${p}</span>`).join("")}</div></div>` : ""}
+      </div><div class="bottom-space"></div></div>${trailbar("day")}`,
+  };
+};
+
+TRAIL.look = (mode) => lookView(mode || "peaks", false);
+VIEWS.look = (mode) => lookView(mode || "peaks", true);
+
+function lookView(mode, standalone) {
+  const tabs = `<div class="seg" role="group" aria-label="Look">${[["peaks", "Peaks"], ["birds", "Birds"], ["around", "Around me"]].map(([k, l]) => `<button data-act="look-mode" data-k="${k}" aria-pressed="${k === mode}">${l}</button>`).join("")}</div>`;
+  const head = `<div class="hstack gap10" style="padding:calc(var(--safe-top) + 12px) 16px 12px">${standalone ? `<button class="icon-btn" data-act="back" data-fallback="tools" aria-label="Back" style="color:#fff">${icon("back")}</button>` : ""}<div class="grow">${tabs}</div>${standalone ? "" : `<button class="icon-btn" data-act="exit-trail" aria-label="Leave trek view" style="color:#fff">${icon("close")}</button>`}</div>`;
+  let body = "";
+  if (mode === "peaks") {
+    body = `<div style="position:relative;flex:1;display:flex;min-height:0"><div class="pano" id="pano">${panoSvg()}</div><div class="reticle"></div></div>
+      <div class="look-sheet"><div class="hstack between"><div class="stack"><span class="h2" id="peak-name">Trishul</span><span class="small muted" id="peak-meta">7,120 m · 23,360 ft · 26 km away</span></div><button class="btn secondary sm" data-act="save-photo">${icon("share", "sm")}Save</button></div>
+      <p class="small muted">Drag the view sideways. Does the line sit on the real ridge? If not, drag until it does.</p></div>`;
+  } else if (mode === "birds") {
+    body = `<div class="stack gap16" style="flex:1;align-items:center;justify-content:center;padding:20px" id="birds">
+        <div class="wave" id="wave">${"<i></i>".repeat(14)}</div>
+        <button class="listen" data-act="listen" id="listen-btn">${icon("mic", "lg")}<span>Listen</span></button>
+        <p style="color:#CFE3DA;text-align:center;max-width:280px" id="listen-hint">Hold your phone up and tap Listen. Works with no network.</p>
+        <div class="stack gap10" id="bird-results" style="width:100%" hidden></div>
+      </div>`;
+  } else {
+    const items = [["camp", "Tilandi camp", "1.9 km · about 3 h 10 min"], ["water", "Small stream", "about 40 min · treat before drinking"], ["climb", "Ridge top", "about 1 h 20 min · steep"], ["look", "Brahmatal lake", "Day 4 · 6 km"], ["signal", "Last network", "Behind you, at Lohajung"]];
+    body = `<div class="scroll" style="padding:4px 16px 16px"><div class="list">${items.map(([ic, t, s]) => `<div class="row"><span class="tile ${ic === "water" ? "water" : ""}">${icon(ic)}</span><span class="grow"><span class="t">${t}</span><span class="s">${s}</span></span></div>`).join("")}</div></div>`;
+  }
+  return {
+    title: "Look", cls: "dark", theme: "#13302A",
+    html: `<div class="stack" style="flex:1;min-height:0;background:#13302A;position:relative">${head}${body}</div>${standalone ? "" : trailbar("look")}`,
+    mount(el) {
+      const pano = el.querySelector("#pano");
+      if (pano) {
+        const name = el.querySelector("#peak-name"), meta = el.querySelector("#peak-meta"), svg = pano.querySelector("svg");
+        const scale = () => svg.getBoundingClientRect().height / 620;
+        pano.scrollLeft = 1010 * scale() - pano.clientWidth / 2;
+        const update = () => {
+          const mid = (pano.scrollLeft + pano.clientWidth / 2) / scale();
+          const p = PANO_PEAKS.reduce((a, b) => (Math.abs(b.x - mid) < Math.abs(a.x - mid) ? b : a));
+          name.textContent = p.name;
+          meta.textContent = `${p.m.toLocaleString("en-IN")} m · ${Math.round(p.m * 3.281).toLocaleString("en-IN")} ft · ${p.km} km away`;
+        };
+        pano.addEventListener("scroll", update, { passive: true });
+        let dx = null;
+        pano.addEventListener("pointerdown", (e) => { if (e.pointerType === "mouse") { dx = { x: e.clientX, s: pano.scrollLeft }; pano.setPointerCapture(e.pointerId); } });
+        pano.addEventListener("pointermove", (e) => { if (dx) pano.scrollLeft = dx.s - (e.clientX - dx.x); });
+        pano.addEventListener("pointerup", () => { dx = null; });
+        update();
+      }
+    },
+  };
+}
+
+function panoSvg() {
+  // A camera view at dawn: snow peaks, a hazy middle ridge, dark forest in front.
+  const W = 1500, H = 620, base = 380;
+  const peakTop = (p) => base - 30 - p.h * 190;
+  let far = `M0 ${H} L0 ${base - 20}`;
+  for (let x = 0; x <= W; x += 12) {
+    let y = base - 20 - 22 * Math.sin(x / 90) - 9 * Math.sin(x / 27) - 4 * Math.sin(x / 9);
+    PANO_PEAKS.forEach((p) => { const d = Math.abs(x - p.x); if (d < 190) y = Math.min(y, peakTop(p) + (base - 20 - peakTop(p)) * (d / 190) ** 0.8 + 6 * Math.sin(x / 7)); });
+    far += ` L${x} ${y.toFixed(1)}`;
+  }
+  far += ` L${W} ${H}Z`;
+  const band = (b, a1, f1, a2, f2) => { let d = `M0 ${H} L0 ${b}`; for (let x = 0; x <= W; x += 16) d += ` L${x} ${(b - a1 * Math.abs(Math.sin(x / f1)) - a2 * Math.sin(x / f2)).toFixed(1)}`; return d + ` L${W} ${H}Z`; };
+  const labels = PANO_PEAKS.map((p) => { const top = peakTop(p), w = p.name.length * 9.5 + 28; return `<g><line x1="${p.x}" y1="${top - 6}" x2="${p.x}" y2="${top - 46}" stroke="#fff" stroke-width="1.5" opacity=".9"/><rect x="${p.x - w / 2}" y="${top - 80}" width="${w}" height="34" rx="17" fill="rgba(255,255,255,.95)"/><text x="${p.x}" y="${top - 57}" text-anchor="middle" font-family="Figtree, sans-serif" font-size="16" font-weight="700" fill="#15302A">${p.name}</text></g>`; }).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" preserveAspectRatio="xMinYMid meet" aria-label="Camera view with peak names">
+    <defs><linearGradient id="psky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F5878"/><stop offset=".55" stop-color="#8FB0C4"/><stop offset=".8" stop-color="#E7C9A4"/></linearGradient>
+    <linearGradient id="psnow" x1="0" y1="0" x2="0" y2="1"><stop offset=".15" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#E4ECF0"/><stop offset=".75" stop-color="#9DB3C0"/></linearGradient>
+    <linearGradient id="phaze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7E98A6"/><stop offset="1" stop-color="#5D7A80"/></linearGradient></defs>
+    <rect width="${W}" height="${H}" fill="url(#psky)"/>
+    <path d="${far}" fill="url(#psnow)"/>
+    <path d="${band(base + 40, 26, 160, 10, 47)}" fill="url(#phaze)" opacity=".9"/>
+    <path d="${band(base + 95, 34, 120, 12, 37)}" fill="#35574A"/>
+    <path d="${band(base + 150, 22, 90, 8, 23)}" fill="#1F3D33"/>
+    ${labels}
+  </svg>`;
+}
+
+TRAIL.group = () => {
+  const d = S.diy;
+  if (d && d.role) {
+    const role = DIY_ROLES.find((r) => r.id === d.role);
+    const sweep = d.role === "sweep";
+    return {
+      title: "Group",
+      html: `<div class="scroll">${trailHead()}<div class="pad stack gap16" style="padding-top:14px">
+        <div class="stack gap4"><span class="eyebrow">DIY Day · you are ${role.name}</span><h1 class="h1">${sweep ? "Everyone is ahead of you" : role.name}</h1><p class="muted">${sweep ? "10 of 10 · nobody behind you. Rohan (Lead) is about 12 min ahead." : role.job}</p></div>
+        ${sweep ? `<div class="list">${[["Rohan", "Lead", "ahead · seen 1 min ago", "#5B8A6A"], ["Kabir", "Navigator", "ahead · seen 1 min ago", "#7F6BAA"], ["Meera", "", "ahead · seen 2 min ago", "#C9821C"], ["Dev", "", "out of range · seen 9 min ago", "#B3261E"]].map(([n, r, s, c]) => `<div class="row"><span class="avatar" style="background:${c}">${n[0]}</span><span class="grow"><span class="t">${n}${r ? ` · ${r}` : ""}</span><span class="s" ${s.startsWith("out") ? 'style="color:var(--danger)"' : ""}>${s}</span></span></div>`).join("")}<div class="row"><span class="grow s">+ 5 more, all close by</span></div></div>
+          <div class="callout amber stack gap6"><b>Your job right now</b><span>Dev dropped out of range near the stream. Check on him at the next stop.</span></div>
+          <button class="btn secondary block" data-act="ask-wait">Ask the group to wait</button>`
+          : `<div class="callout stack gap6"><b>Your job right now</b><span>${role.id === "water" ? "Water in 40 min. Remind everyone to fill both bottles; the next one is 2 h away." : role.id === "nav" ? "Junction in 25 min. Many people miss the forest entry here. Keep right at the cairn." : role.id === "safety" ? "Altitude check due at the next rest stop. Ask everyone how they're feeling." : role.id === "nature" ? "Trishul comes into view on the ridge in about 1 h. Have the Look tab ready." : "Rest stop due in 20 min. Set the pace for the slowest walker."}</span></div>`}
+        <button class="btn ghost block" data-act="end-diy">End DIY Day</button>
+      </div><div class="bottom-space"></div></div>${trailbar("group")}`,
+    };
+  }
+  return {
+    title: "Group",
+    html: `<div class="scroll">${trailHead()}<div class="pad stack gap16" style="padding-top:14px">
+      <div class="stack gap10"><span class="eyebrow">Group</span><h1 class="h1">Lead a DIY Day</h1><p class="lede">For one day, the group leads itself. Everyone gets a role: Lead, Navigator, Sweep, Water and more. Phones link over Bluetooth, no network needed.</p></div>
+      <ul class="check-list"><li><span class="tick">${icon("qr", "sm")}</span>Everyone scans one code to join</li><li><span class="tick">${icon("users", "sm")}</span>Each person picks a role</li><li><span class="tick">${icon("now", "sm")}</span>The Now screen changes to fit each role</li></ul>
+      <p class="small muted">Inspired by how Indiahikes runs DIY days. Your trek leader is still in charge.</p>
+    </div></div>
+    <div class="footer" style="padding-bottom:16px"><button class="btn primary block" data-go="diy-start">Start a DIY Day</button></div>${trailbar("group")}`,
+  };
+};
+
+VIEWS["diy-start"] = () => ({
+  title: "DIY Day",
+  html: `${appbar("DIY Day", { back: "trail/group" })}<div class="scroll"><div class="pad stack gap16" style="align-items:center;text-align:center;padding-top:4px">
+      <p class="lede">Ask everyone to scan this code.</p>
+      <div class="qr">${qrSvg()}</div>
+      <p class="muted">Or enter code <b style="color:var(--ink);font-size:20px;letter-spacing:.12em">4827</b></p>
+      <p class="h3" id="joined">1 of 10 joined</p>
+      <div class="people" id="people" style="justify-content:center"><span class="person"><span class="avatar" style="background:#1E4D40">Y</span>You</span></div>
+    </div></div>
+    <div class="footer"><button class="btn primary block" data-go="diy-roles" id="roles-btn" disabled>Pick roles</button><p class="note">Works over Bluetooth. No network needed.</p></div>`,
+  mount(el) {
+    const colors = ["#5B8A6A", "#7F6BAA", "#C9821C", "#21639A", "#B3261E", "#3F6E52", "#8A5A10", "#4D6A70", "#9A4F7A"];
+    let i = 0;
+    const timer = setInterval(() => {
+      if (!el.isConnected) return clearInterval(timer);
+      const n = DIY_PEOPLE[i];
+      el.querySelector("#people").insertAdjacentHTML("beforeend", `<span class="person"><span class="avatar" style="background:${colors[i]}">${n[0]}</span>${n}</span>`);
+      i++;
+      el.querySelector("#joined").textContent = `${i + 1} of 10 joined`;
+      buzz(8);
+      if (i >= 4) el.querySelector("#roles-btn").disabled = false;
+      if (i >= DIY_PEOPLE.length) clearInterval(timer);
+    }, 650);
+  },
+});
+
+function qrSvg() {
+  let seed = 4827, cells = "";
+  const rand = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+  const finder = (x, y) => `<rect x="${x}" y="${y}" width="7" height="7" fill="#15302A"/><rect x="${x + 1}" y="${y + 1}" width="5" height="5" fill="#fff"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" fill="#15302A"/>`;
+  for (let y = 0; y < 25; y++) for (let x = 0; x < 25; x++) {
+    const inFinder = (x < 8 && y < 8) || (x > 16 && y < 8) || (x < 8 && y > 16);
+    if (!inFinder && rand() > 0.52) cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+  }
+  return `<svg viewBox="0 0 25 25" width="100%" height="100%" shape-rendering="crispEdges" aria-label="Join code"><g fill="#15302A">${cells}</g>${finder(0, 0)}${finder(18, 0)}${finder(0, 18)}</svg>`;
+}
+
+VIEWS["diy-roles"] = () => ({
+  title: "Pick your role",
+  html: `${appbar("", { back: "diy-start" })}<div class="scroll"><div class="pad stack gap16" style="padding-top:4px">
+      <div class="stack gap6"><span class="eyebrow">DIY Day · 10 trekkers</span><h1 class="h1">Pick your role for today</h1></div>
+      <div class="stack gap10" role="radiogroup">${DIY_ROLES.map((r) => `<button class="role" role="radio" aria-checked="false" data-act="pick-role" data-id="${r.id}" ${r.taken ? "disabled" : ""}><span class="radio" style="margin-top:2px"></span><span class="stack gap4"><span class="h3">${r.name}${r.taken ? ` <span class="small muted" style="font-weight:400">· ${r.taken}</span>` : ""}</span><span class="small muted">${r.job}</span></span></button>`).join("")}</div>
+    </div><div class="bottom-space"></div></div>
+    <div class="footer"><button class="btn primary block" data-act="start-diy" id="diy-go" disabled>Pick a role</button></div>`,
+});
+
+/* ----- altitude check ----- */
+
+VIEWS.ams = () => ({
+  title: "How am I feeling?",
+  html: `${appbar("How am I feeling?", { back: "trail/now", close: true })}<div class="scroll" id="ams"></div><div class="footer" id="ams-foot"></div>`,
+  mount(el) { amsStep(el, 0, []); },
+});
+
+function amsStep(el, i, answers) {
+  const body = el.querySelector("#ams"), foot = el.querySelector("#ams-foot");
+  body.scrollTop = 0;
+  const total = AMS_QUESTIONS.length + 1;
+  const dots = `<div class="step-dots">${Array.from({ length: total }, (_, k) => `<span class="${k <= i ? "on" : ""}"></span>`).join("")}</div>`;
+  if (i < AMS_QUESTIONS.length) {
+    const q = AMS_QUESTIONS[i];
+    let pick = answers[i] ?? null;
+    body.innerHTML = `<div class="pad stack gap20 enter-push" style="padding-top:4px">${dots}<div class="stack gap6"><span class="eyebrow">Question ${i + 1} of ${total}</span><h1 class="h1">${q.q}</h1></div>
+      <div class="q-opts" role="radiogroup">${q.opts.map((o, k) => `<button class="choice" role="radio" aria-checked="${pick === k}" data-k="${k}"><span class="radio"></span><span class="h3" style="font-weight:${pick === k ? 700 : 400}">${o}</span></button>`).join("")}</div></div>`;
+    foot.innerHTML = `<button class="btn primary block" id="ams-next" ${pick == null ? "disabled" : ""}>Next</button>`;
+    body.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
+      pick = +b.dataset.k; buzz();
+      body.querySelectorAll(".choice").forEach((x) => { const on = +x.dataset.k === pick; x.setAttribute("aria-checked", on); x.querySelector(".h3").style.fontWeight = on ? 700 : 400; });
+      foot.querySelector("#ams-next").disabled = false;
+    }));
+    foot.querySelector("#ams-next").onclick = () => { answers[i] = pick; amsStep(el, i + 1, answers); };
+  } else if (i === AMS_QUESTIONS.length) {
+    const flags = new Set(answers.flags || []);
+    body.innerHTML = `<div class="pad stack gap20 enter-push" style="padding-top:4px">${dots}<div class="stack gap6"><span class="eyebrow">Last question</span><h1 class="h1">Is any of this happening right now?</h1><p class="muted">Tick all that apply.</p></div>
+      <div class="q-opts">${AMS_WARNINGS.map((w, k) => `<button class="choice" role="checkbox" aria-checked="${flags.has(k)}" data-k="${k}"><span class="check ${flags.has(k) ? "on" : ""}">${icon("check", "sm", 3)}</span><span class="h3">${w}</span></button>`).join("")}</div></div>`;
+    foot.innerHTML = `<button class="btn primary block" id="ams-next">See my result</button>`;
+    body.querySelectorAll(".choice").forEach((b) => b.addEventListener("click", () => {
+      const k = +b.dataset.k; flags.has(k) ? flags.delete(k) : flags.add(k); buzz();
+      b.setAttribute("aria-checked", flags.has(k)); b.querySelector(".check").classList.toggle("on", flags.has(k));
+    }));
+    foot.querySelector("#ams-next").onclick = () => { answers.flags = [...flags]; amsStep(el, i + 1, answers); };
+  } else {
+    const score = answers.slice(0, 4).reduce((a, b) => a + b, 0);
+    const serious = (answers.flags || []).length > 0 || score >= 6 || answers.slice(0, 4).includes(3);
+    const mild = !serious && score >= 3;
+    const r = serious
+      ? { cls: "serious", title: "This is serious. Go down now.", text: "Don't go alone. Tell your trek leader straight away. Going down is the right call." }
+      : mild
+        ? { cls: "mild", title: "These can be early signs of altitude sickness", text: "Tell your trek leader now. Don't climb higher today. Rest and drink water." }
+        : { cls: "fine", title: "You're doing fine", text: answers[0] > 0 ? "A light headache is common up high. Keep sipping water, keep the pace easy, and check again in an hour." : "Keep sipping water and keep the pace easy." };
+    if (serious) buzz([60, 60, 60]);
+    body.innerHTML = `<div class="pad stack gap16 enter-push" style="padding-top:4px"><div class="result ${r.cls}"><span class="tile ${serious ? "" : mild ? "amber" : "ok"}" style="${serious ? "background:rgba(255,255,255,.18);color:#fff" : ""}">${icon(serious ? "sos" : mild ? "info" : "check")}</span><h1 class="h1" style="font-size:30px">${r.title}</h1><p style="font-size:17px">${r.text}</p></div>
+      <p class="small muted">This is a self-check, not a diagnosis. It's based on the Lake Louise score that trek leaders use.</p></div>`;
+    foot.innerHTML = serious
+      ? `<button class="btn danger block" data-go="sos">Open SOS</button><button class="btn secondary block" data-act="tell-leader">Tell my trek leader</button>`
+      : mild
+        ? `<button class="btn primary block" data-act="remind-ams">Remind me to check in 1 hour</button><button class="btn ghost block" data-act="ams-again">Check again</button>`
+        : `<button class="btn primary block" data-act="back" data-fallback="trail/now">Done</button><button class="btn ghost block" data-act="ams-again">Check again</button>`;
+  }
+}
+
+/* ----- SOS ----- */
+
+VIEWS.sos = () => ({
+  title: "SOS", cls: "sos-screen", theme: "#2A0F0D",
+  html: `<header class="appbar" style="background:transparent"><button class="icon-btn" style="color:#fff" data-act="back" data-fallback="trail/now" aria-label="Close">${icon("close")}</button><div class="title">Emergency</div><span class="spacer"></span></header>
+    <div class="scroll"><div class="pad stack gap16" style="padding-top:4px">
+      <button class="btn danger block" style="min-height:72px;font-size:22px;border-radius:20px" data-act="call-112">${icon("phone", "lg")}Call 112</button>
+      <p class="small muted center">India's emergency number. Works on any network with even one bar.</p>
+      <div class="card pad16 stack gap8"><span class="small muted">Your location · read this out on the call</span><span class="coords">30.1437° N, 79.6012° E</span><span class="small muted">About 9,600 ft · between Gujreni and Tilandi · 2 min ago</span></div>
+      <button class="btn block" style="background:#fff;color:#2A0F0D" data-act="sms-location">${icon("chat", "sm")}Send my location by SMS</button>
+      <div class="card pad16 stack gap6"><b>Safest way out</b><span class="muted">Back down to Gujreni, then Lohajung. About 3 h to Lohajung from here.</span></div>
+      <div class="card pad16 stack gap6"><b>Nearest health centre</b><span class="muted">PHC Dewal, about 30 km from Lohajung by road. For anything serious, Rudraprayag or Gopeshwar.</span></div>
+      <div class="card pad16 stack gap8"><b>Your emergency contacts</b>${S.contacts.length ? S.contacts.map((c) => `<span class="muted">${esc(c.name)} · ${esc(c.phone)}</span>`).join("") : `<span class="muted">None added yet. Add them in Me → Emergency contacts.</span>`}</div>
+    </div><div class="bottom-space"></div></div>`,
+});
+
+/* ----- tools and me ----- */
+
+VIEWS.tools = () => ({
+  title: "Tools",
+  html: `<div class="scroll"><div class="pad" style="padding-top:calc(var(--safe-top) + 20px)"><div class="stack gap4"><span class="eyebrow">Tools</span><h1 class="h1">Works anywhere</h1></div></div>
+    <section class="section" style="padding-top:16px"><div class="list">
+      <button class="row" data-go="look/peaks"><span class="tile">${icon("look")}</span><span class="grow"><span class="t">Name the peaks</span><span class="s">Point your camera at the skyline</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+      <button class="row" data-go="look/birds"><span class="tile">${icon("bird")}</span><span class="grow"><span class="t">Bird ID</span><span class="s">Listen and name the bird</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+      <button class="row" data-go="ams"><span class="tile danger">${icon("heart")}</span><span class="grow"><span class="t">How am I feeling?</span><span class="s">1-minute altitude check</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+    </div></section>
+    <section class="section"><div class="section-head"><h2 class="h2">Try with real GPS</h2></div><div class="list">
+      <a class="row" href="../" style="text-decoration:none"><span class="tile ok">${icon("locate")}</span><span class="grow"><span class="t">Trail playback</span><span class="s">Walk a practice loop where you are, or replay a trek</span></span><span class="chev">${icon("chev", "sm")}</span></a>
+    </div></section>
+    <section class="section"><div class="section-head"><h2 class="h2">Coming soon</h2></div><div class="list">
+      ${[["compass", "Compass and altitude"], ["record", "Record a walk for training"], ["file", "Open a GPX file"]].map(([ic, t]) => `<div class="row"><span class="tile" style="background:#ECEFEE;color:var(--faint)">${icon(ic)}</span><span class="grow"><span class="t" style="color:var(--muted)">${t}</span></span></div>`).join("")}
+    </div></section>
+    <div class="bottom-space"></div></div>${tabbar("tools")}`,
+});
+
+const EXP_LABEL = { first: "First Himalayan trek", few: "A few treks done", lots: "Lots of treks" };
+VIEWS.me = () => ({
+  title: "Me",
+  html: `<div class="scroll"><div class="pad" style="padding-top:calc(var(--safe-top) + 20px)"><div class="stack gap4"><span class="eyebrow">Me</span><h1 class="h1">Your settings</h1></div></div>
+    <section class="section" style="padding-top:16px"><div class="card" style="background:var(--forest);color:#fff;box-shadow:none"><div class="pad16 stack gap10" style="padding:18px">
+      <span class="h3">Help us shape Mt. Aryse</span><span style="color:#CFE3DA;font-size:15px">Two minutes of honest feedback is the most useful thing you can give us right now.</span>
+      <button class="btn amber sm" style="align-self:flex-start" data-act="feedback">${icon("chat", "sm")}Send feedback</button></div></div></section>
+    <section class="section"><div class="list">
+      <button class="row" data-act="change-exp"><span class="tile">${icon("me")}</span><span class="grow"><span class="t">Experience</span><span class="s">${EXP_LABEL[S.experience] || "Not set"}</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+      <button class="row" data-act="contacts"><span class="tile danger">${icon("users")}</span><span class="grow"><span class="t">Emergency contacts</span><span class="s">${S.contacts.length ? S.contacts.map((c) => esc(c.name)).join(", ") : "None yet"}</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+      <div class="row"><span class="tile">${icon("storage")}</span><span class="grow"><span class="t">Offline storage</span><span class="s">${Object.keys(S.downloaded).length ? "Brahmatal · 48 MB" : "No treks downloaded"}</span></span></div>
+      <button class="row" data-act="toggle-battery" role="switch" aria-checked="${S.batterySaver}"><span class="tile">${icon("battery")}</span><span class="grow"><span class="t">Battery saver</span><span class="s">Track every 15 s on long days</span></span><span style="width:50px;height:30px;border-radius:15px;background:${S.batterySaver ? "var(--ok)" : "var(--line-strong)"};position:relative;transition:background .2s"><span style="position:absolute;top:3px;left:${S.batterySaver ? 23 : 3}px;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s"></span></span></button>
+    </div></section>
+    <section class="section"><div class="list">
+      <button class="row" data-act="about"><span class="tile">${icon("info")}</span><span class="grow"><span class="t">About this test</span></span><span class="chev">${icon("chev", "sm")}</span></button>
+      <button class="row" data-act="restart"><span class="tile">${icon("restart")}</span><span class="grow"><span class="t">Start again from the beginning</span><span class="s">Clears everything you did in this test</span></span></button>
+    </div><p class="small muted center mt16">Mt. Aryse · early prototype · Nov 2026</p></section>
+    <div class="bottom-space"></div></div>${tabbar("me")}`,
+});
+
+/* ---------- actions ---------- */
+
+const ACTIONS = {
+  back(el) {
+    const fb = el.dataset.fallback || "explore";
+    if (stack.length > 1) history.back(); else go(fb, { replace: true });
+  },
+  "close-sheet": () => closeSheet(),
+  "skip-install": () => { set({ installSeen: true }); go("welcome"); },
+  "pick-exp"(el) {
+    set({ experience: el.dataset.v }); buzz();
+    el.parentElement.querySelectorAll(".choice").forEach((c) => c.setAttribute("aria-checked", c === el));
+    document.getElementById("exp-next").disabled = false;
+  },
+  "allow-location"(el) {
+    el.disabled = true; el.textContent = "Waiting for your phone…";
+    const done = (ok) => { set({ location: ok ? "granted" : "denied" }); ACTIONS["finish-onboarding"](); if (!ok) setTimeout(() => toast("No problem. You can turn location on later.", "info"), 400); };
+    if (!navigator.geolocation) return done(false);
+    navigator.geolocation.getCurrentPosition(() => done(true), () => done(false), { timeout: 15000, maximumAge: 600000 });
+  },
+  "finish-onboarding"() { set({ onboarded: true }); stack = []; go("explore", { replace: true }); },
+  month(el) {
+    const m = el.dataset.m;
+    el.parentElement.querySelectorAll(".filter").forEach((b) => b.setAttribute("aria-pressed", b === el));
+    document.querySelectorAll("#all-treks .row").forEach((r) => { r.hidden = m !== "Any month" && !r.dataset.months.split(",").includes(m); });
+  },
+  "month-note"(el) {
+    el.parentElement.querySelectorAll(".month").forEach((b) => b.setAttribute("aria-pressed", b === el));
+    document.getElementById("month-note").textContent = BRAHMATAL.monthNotes[el.dataset.m].text;
+  },
+  "toggle-day"(el) { el.setAttribute("aria-expanded", el.getAttribute("aria-expanded") !== "true"); },
+  plan() {
+    sheet(`<h2 class="h2">6 weeks to Brahmatal</h2><p class="muted">Three walks a week, getting a little longer each week. Go at a pace where you can still talk.</p>
+      <div class="list">${[["Weeks 1–2", "3 km brisk walk, 3 times a week"], ["Weeks 3–4", "4 km, with one hilly route or stairs"], ["Weeks 5–6", "5 km in under 40 min, plus 20 min of stairs with a light backpack"]].map(([w, t]) => `<div class="row"><span class="grow"><span class="t">${w}</span><span class="s">${t}</span></span></div>`).join("")}</div>
+      <p class="small muted">In the real app, your walks from Google Fit or Apple Health fill this in.</p>
+      <button class="btn primary block" data-act="close-sheet">Got it</button>`);
+  },
+  "share-trek"() {
+    const data = { title: "Brahmatal on Mt. Aryse", text: "Have a look at Brahmatal on Mt. Aryse", url: location.href };
+    if (navigator.share) navigator.share(data).catch(() => {}); else { navigator.clipboard && navigator.clipboard.writeText(location.href); toast("Link copied"); }
+  },
+  ask() {
+    sheet(`<h2 class="h2">Ask about Brahmatal</h2><p class="muted">Trekkers who've just done it, and trek leaders, usually answer within a day.</p>
+      <label class="field">Your question<textarea id="ask-q" placeholder="For example: Is there snow at the top in early December?"></textarea></label>
+      <button class="btn primary block" data-act="post-question">Post question</button>`);
+  },
+  "post-question"() { closeSheet(); toast("Posted. We'll let you know when someone answers."); },
+  notify(el) { toast(`We'll tell you when ${el.dataset.name} is ready.`); },
+  download(el) {
+    const id = el.dataset.id, t = trekById(id);
+    el.style.pointerEvents = "none";
+    el.innerHTML = `<span class="stack gap6" style="width:100%"><span id="dl-txt">Downloading · 0 of ${t.size} MB</span><span class="progress"><i style="width:0%"></i></span></span>`;
+    let p = 0;
+    const tick = setInterval(() => {
+      p = Math.min(100, p + 4 + Math.random() * 7);
+      const bar = el.querySelector(".progress i"), txt = el.querySelector("#dl-txt");
+      if (!bar) return clearInterval(tick);
+      bar.style.width = p + "%"; txt.textContent = `Downloading · ${Math.round((p / 100) * t.size)} of ${t.size} MB`;
+      if (p >= 100) {
+        clearInterval(tick);
+        S.downloaded[id] = true; save(); buzz(20);
+        document.getElementById("trek-footer").innerHTML = trekFooter(t, true);
+        toast(`${t.name} is on your phone. Works offline now.`);
+      }
+    }, 120);
+  },
+  "check-open"(el) { openCheck(el.dataset.id); },
+  "start-trek"() {
+    sheet(`<h2 class="h2">Start Brahmatal?</h2><p class="muted">For this test, we'll put you on Day 3, walking from Gujreni to Tilandi. Your phone is in airplane mode in this story, and that's fine.</p>
+      <button class="btn amber block" data-act="go-trail">Start trek</button><button class="btn ghost block" data-act="close-sheet">Not yet</button>`);
+  },
+  "go-trail"() { closeSheet(true); go("trail/now"); },
+  "exit-trail"() {
+    sheet(`<h2 class="h2">Leave trek view?</h2><p class="muted">Your trek keeps recording in the background. You can come back any time from My treks.</p>
+      <button class="btn primary block" data-act="confirm-exit">Leave trek view</button><button class="btn ghost block" data-act="close-sheet">Stay</button>`);
+  },
+  "confirm-exit"() {
+    closeSheet(true);
+    if (stack.length > 1 && stack[stack.length - 2].startsWith("prepare")) history.back(); else go("prepare/brahmatal", { replace: true });
+    if (!S.feedbackAsked) { set({ feedbackAsked: true }); setTimeout(() => feedbackSheet(true), 500); }
+  },
+  drift() { set({ offTrail: true }); buzz([40, 60, 40]); render(); },
+  snooze() { set({ offTrail: false }); render(); toast("Okay. Drift alerts paused for 30 min.", "info"); },
+  "back-on-trail"() { set({ offTrail: false }); buzz(); render(); toast("Back on the trail."); },
+  note() {
+    sheet(`<h2 class="h2">Add a note</h2><p class="muted">Saved on your phone with the time and place. It shows up in your trek memories.</p>
+      <label class="field">Note<textarea id="note-txt" placeholder="Saw a monal just after the stream"></textarea></label>
+      <button class="btn primary block" data-act="save-note">Save note</button>`);
+  },
+  "save-note"() {
+    const v = (document.getElementById("note-txt").value || "").trim();
+    if (!v) return toast("Write something first", "info");
+    S.notes.push({ text: v, at: Date.now() }); save(); closeSheet(); toast("Note saved, with your location.");
+  },
+  layer(el) {
+    const on = el.getAttribute("aria-pressed") !== "true";
+    el.setAttribute("aria-pressed", on);
+    document.querySelectorAll(`#map-svg [data-layer="${el.dataset.k}"]`).forEach((g) => (g.style.display = on ? "" : "none"));
+  },
+  zoom(el) { document.getElementById("map").__zoom(+el.dataset.z); },
+  recenter() { document.getElementById("map").__center(); },
+  "pick-day"(el) {
+    const view = TRAIL.day(+el.dataset.n);
+    const scr = $app.querySelector(".screen");
+    scr.innerHTML = view.html;
+  },
+  "look-mode"(el) { go(current.name === "look" ? `look/${el.dataset.k}` : `trail/look/${el.dataset.k}`, { replace: true }); },
+  "save-photo"() { toast("Saved to your photos, with peak names."); },
+  listen(el) {
+    if (el.classList.contains("on")) return;
+    el.classList.add("on"); el.querySelector("span").textContent = "Listening…";
+    document.getElementById("wave").classList.add("on");
+    document.querySelectorAll("#wave i").forEach((i, k) => (i.style.animationDelay = (k % 7) * 0.09 + "s"));
+    document.getElementById("listen-hint").textContent = "Keep still for a few seconds…";
+    setTimeout(() => {
+      if (!el.isConnected) return;
+      el.classList.remove("on"); el.querySelector("span").textContent = "Listen again";
+      document.getElementById("wave").classList.remove("on");
+      document.getElementById("listen-hint").textContent = "Heard 2 birds.";
+      const box = document.getElementById("bird-results");
+      box.hidden = false; buzz(20);
+      box.innerHTML = BIRDS.map((b) => `<div class="card pad16 stack gap4 enter-fade"><span class="hstack between"><span class="h3">${b.name}</span><span class="chip ${b.likely === "Very likely" ? "open" : "rules"}">${b.likely}</span></span><span class="small muted">${b.note}</span></div>`).join("") + `<p class="small center" style="color:#9FBFB2">Sample result for this test.</p>`;
+    }, 3200);
+  },
+  "pick-role"(el) {
+    el.parentElement.querySelectorAll(".role").forEach((r) => r.setAttribute("aria-checked", r === el));
+    const role = DIY_ROLES.find((r) => r.id === el.dataset.id);
+    const b = document.getElementById("diy-go"); b.disabled = false; b.textContent = `Start walking as ${role.name}`; b.dataset.role = role.id; buzz();
+  },
+  "start-diy"(el) {
+    set({ diy: { role: el.dataset.role } });
+    const at = stack.lastIndexOf("trail/group");
+    if (at >= 0) history.go(at - (stack.length - 1)); else go("trail/group", { replace: true });
+  },
+  "end-diy"() { set({ diy: null }); render(); toast("DIY Day ended. Nice work, team."); },
+  "ask-wait"() { buzz(30); toast("Sent to everyone nearby over Bluetooth."); },
+  "ams-again"() { amsStep($app.querySelector(".screen"), 0, []); },
+  "remind-ams"() { toast("We'll remind you in 1 hour."); setTimeout(() => ACTIONS.back({ dataset: { fallback: "trail/now" } }), 900); },
+  "tell-leader"() {
+    const text = "I just did the altitude check on Mt. Aryse and it says I should go down. Can you come and check on me?";
+    if (navigator.share) navigator.share({ text }).catch(() => {}); else toast("In the real app this alerts your trek leader.", "info");
+  },
+  "call-112"() {
+    sheet(`<h2 class="h2">This would call 112</h2><p class="muted">In the real app, this button calls India's emergency number straight away. It doesn't in this test.</p><button class="btn primary block" data-act="close-sheet">Okay</button>`);
+  },
+  "sms-location"() { toast("Saved. It'll send as soon as there's any signal. (Test: nothing sent.)"); },
+  feedback() { feedbackSheet(false); },
+  "change-exp"() {
+    sheet(`<h2 class="h2">Your experience</h2><div class="stack gap10" role="radiogroup">${Object.entries(EXP_LABEL).map(([v, l]) => `<button class="choice" role="radio" aria-checked="${S.experience === v}" data-act="set-exp" data-v="${v}"><span class="radio"></span><span class="h3">${l}</span></button>`).join("")}</div>`);
+  },
+  "set-exp"(el) { set({ experience: el.dataset.v }); closeSheet(); render(); toast("Updated. We'll explain things to match."); },
+  contacts() { contactsSheet(() => render()); },
+  "toggle-battery"() { set({ batterySaver: !S.batterySaver }); render(); },
+  about() {
+    sheet(`<h2 class="h2">About this test</h2>
+      <ul class="bullets"><li>Mt. Aryse is an offline trek companion for India, being designed with trekkers and trek leaders.</li><li>Everything here is a prototype. Treks, times, statuses and people are sample data.</li><li>Your answers stay on this phone. Nothing is sent unless you send feedback yourself.</li><li>Map data from OpenStreetMap contributors.</li></ul>
+      <button class="btn primary block" data-act="close-sheet">Close</button>`);
+  },
+  restart() {
+    sheet(`<h2 class="h2">Start again?</h2><p class="muted">This clears what you did in this test and takes you back to the welcome screen.</p>
+      <button class="btn primary block" data-act="confirm-restart">Start again</button><button class="btn ghost block" data-act="close-sheet">Cancel</button>`);
+  },
+  "confirm-restart"() { S = Object.assign({}, DEFAULT_STATE, { installSeen: true }); save(); closeSheet(true); stack = []; go("welcome", { replace: true }); },
+};
+
+function openCheck(id) {
+  const c = CHECKS.find((x) => x.id === id);
+  const done = !!S.checks[id];
+  const toggleBtn = `<button class="btn ${done ? "secondary" : "primary"} block" data-act="toggle-check" data-id="${id}">${done ? "Mark as not done" : "Mark as done"}</button>`;
+  const bodies = {
+    fitness: `<p>${BRAHMATAL.fitness.target}.</p><div class="progress"><i style="width:62%"></i></div><p class="small muted">${BRAHMATAL.fitness.best} <span class="sample-tag">sample</span>. ${BRAHMATAL.fitness.weeks}.</p>`,
+    travel: `<div class="list">${[["26 Nov", "Reach Rishikesh. Stay near the bus stand."], ["27 Nov, 5 am", "Bus to Lohajung, about 12 h"], ["2 Dec", "Back in Rishikesh by evening"], ["3 Dec", "Buffer day. Book your train or flight for today or later."]].map(([a, b]) => `<div class="row"><span class="grow"><span class="t">${a}</span><span class="s">${b}</span></span></div>`).join("")}</div>`,
+    permits: `<ul class="bullets"><li>Forest permit at Lohajung. Your trek company usually arranges it.</li><li>Carry a photo ID (Aadhaar, passport or driving licence) and 2 photocopies.</li><li>Medical certificate from a doctor, if your trek company asks for one.</li></ul><p class="source">${BRAHMATAL.permits.source}</p>`,
+    offline: `<ol class="bullets"><li>Turn on airplane mode.</li><li>Close Mt. Aryse and open it again.</li><li>Open Brahmatal and check the map and today's plan load.</li></ol><p class="small muted">If it all opens, you're ready for no network.</p>`,
+  };
+  if (id === "packing") return packingSheet();
+  if (id === "contacts") return contactsSheet(() => { if (S.contacts.length) S.checks.contacts = true; save(); render(); });
+  sheet(`<div class="hstack gap12"><span class="tile">${icon(c.icon)}</span><h2 class="h2">${c.title}</h2></div>${bodies[id] || ""}${toggleBtn}`);
+}
+ACTIONS["toggle-check"] = (el) => { S.checks[el.dataset.id] = !S.checks[el.dataset.id]; save(); buzz(); closeSheet(true); render(); if (S.checks[el.dataset.id]) toast("Done. One less thing to think about."); };
+
+function packingSheet() {
+  const all = PACKING.flatMap((g) => g.items);
+  const count = () => all.filter((i) => S.packing[i]).length;
+  sheet(`<div class="hstack between"><h2 class="h2">Packing list</h2><span class="small muted" id="pack-count">${count()} of ${all.length}</span></div><p class="muted">For Brahmatal in November.</p>
+    ${PACKING.map((g) => `<div class="stack gap8"><span class="eyebrow">${g.group}</span><div class="list">${g.items.map((i) => `<button class="row" data-item="${esc(i)}" style="min-height:54px"><span class="check ${S.packing[i] ? "on" : ""}">${icon("check", "sm", 3)}</span><span class="grow"><span class="t" style="font-weight:400">${i}</span></span></button>`).join("")}</div></div>`).join("")}
+    <button class="btn primary block" data-act="close-sheet">Done</button>`, (sh) => {
+    sh.querySelectorAll("[data-item]").forEach((b) => b.addEventListener("click", () => {
+      const i = b.dataset.item; S.packing[i] = !S.packing[i]; buzz();
+      b.querySelector(".check").classList.toggle("on", S.packing[i]);
+      sh.querySelector("#pack-count").textContent = `${count()} of ${all.length}`;
+      S.checks.packing = count() === all.length; save();
+    }));
+    return () => { if (current && current.name === "prepare") setTimeout(render, 230); };
+  });
+}
+
+function contactsSheet(after) {
+  sheet(`<h2 class="h2">Emergency contacts</h2><p class="muted">Someone at home who knows your trek plan. Used only if you press SOS.</p>
+    <div class="list" id="c-list">${S.contacts.map((c) => `<div class="row"><span class="grow"><span class="t">${esc(c.name)}</span><span class="s">${esc(c.phone)}</span></span></div>`).join("") || '<div class="row"><span class="s">No contacts yet</span></div>'}</div>
+    <label class="field">Name<input id="c-name" autocomplete="off" placeholder="Maa"></label>
+    <label class="field">Phone number<input id="c-phone" type="tel" inputmode="tel" autocomplete="off" placeholder="98765 43210"></label>
+    <button class="btn primary block" id="c-add">Add contact</button>`, (sh) => {
+    sh.querySelector("#c-add").addEventListener("click", () => {
+      const name = sh.querySelector("#c-name").value.trim(), phone = sh.querySelector("#c-phone").value.trim();
+      if (!name || phone.replace(/\D/g, "").length < 6) return toast("Add a name and a phone number", "info");
+      S.contacts.push({ name, phone }); save(); closeSheet(); toast(`${name} added. Stored only on this phone.`);
+    });
+    return () => setTimeout(after, 230);
+  });
+}
+
+function feedbackSheet(afterTrail) {
+  let rating = null, who = null;
+  sheet(`<h2 class="h2">${afterTrail ? "How was that?" : "Send feedback"}</h2>
+    <p class="muted">Be honest. What didn't work is more useful than what did.</p>
+    <div class="stack gap8"><span class="field" style="margin:0">How easy was it to use?</span><div class="stars" role="group">${[1, 2, 3, 4, 5].map((n) => `<button data-r="${n}" aria-pressed="false" aria-label="${n} out of 5">${n}</button>`).join("")}</div><div class="hstack between small muted"><span>Confusing</span><span>Very easy</span></div></div>
+    <div class="stack gap8"><span class="field" style="margin:0">You are a</span><div class="hstack gap8">${["Trek leader", "Trekker", "Both"].map((w) => `<button class="filter" data-w="${w}" aria-pressed="false">${w}</button>`).join("")}</div></div>
+    <label class="field">What confused you, or what's missing?<textarea id="fb-txt" placeholder="The time to camp felt…"></textarea></label>
+    <label class="field">Your name (optional)<input id="fb-name" autocomplete="name"></label>
+    <button class="btn primary block" id="fb-send">${icon("chat", "sm")}Send on WhatsApp</button>
+    <button class="btn ghost block" id="fb-copy">Copy as text instead</button>`, (sh) => {
+    sh.querySelectorAll("[data-r]").forEach((b) => b.addEventListener("click", () => { rating = +b.dataset.r; buzz(); sh.querySelectorAll("[data-r]").forEach((x) => x.setAttribute("aria-pressed", x === b)); }));
+    sh.querySelectorAll("[data-w]").forEach((b) => b.addEventListener("click", () => { who = b.dataset.w; sh.querySelectorAll("[data-w]").forEach((x) => x.setAttribute("aria-pressed", x === b)); }));
+    const compose = () => {
+      const name = sh.querySelector("#fb-name").value.trim(), txt = sh.querySelector("#fb-txt").value.trim();
+      const seen = S.visited.filter((v) => !["install"].includes(v)).join(", ");
+      return `Mt. Aryse feedback${name ? ` from ${name}` : ""}\nEase of use: ${rating ? rating + "/5" : "not rated"}\nRole: ${who || "not said"}\n\n${txt || "(no comments)"}\n\nScreens tried: ${seen}\nPhone: ${navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || "unknown"}`;
+    };
+    sh.querySelector("#fb-send").addEventListener("click", () => { window.open("https://wa.me/?text=" + encodeURIComponent(compose()), "_blank"); closeSheet(); toast("Thank you. This really helps."); });
+    sh.querySelector("#fb-copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(compose()); toast("Copied. Paste it in any chat."); } catch (e) { toast("Couldn't copy on this phone", "info"); }
+    });
+  });
+}
+
+/* ---------- wiring ---------- */
+
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("[data-act]");
+  if (a && !a.disabled) { e.preventDefault(); const fn = ACTIONS[a.dataset.act]; if (fn) fn(a, e); return; }
+  const g = e.target.closest("[data-go]");
+  if (g && !g.disabled) { e.preventDefault(); go(g.dataset.go, { replace: !!g.dataset.replace }); }
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+window.addEventListener("hashchange", render);
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault(); window.__installPrompt = e;
+  const b = document.getElementById("install-btn"); if (b) VIEWS.install().mount();
+});
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("../sw.js", { scope: "../" }).catch(() => {});
+
+if (!location.hash) go(homeRoute(), { replace: true }); else render();
+</script>
+</body>
+</html>
