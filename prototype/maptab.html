@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Map tab · Mt. Aryse prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+html,body{margin:0;background:#DDE4E0}
+a{color:#1E4D40}a:hover{color:#123329}
+.frame{width:390px;margin:0 auto;transform-origin:top center}
+.proto-home{position:fixed;right:10px;bottom:10px;z-index:9;padding:8px 12px;border-radius:999px;background:rgba(21,48,42,.85);color:#fff;font:700 13px system-ui;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #EEF2EC; color: #15302A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; position: relative; overflow: hidden">
+  <svg width="390" height="844" viewBox="0 0 390 844" role="img" aria-label="Topographic map of today's route from Gujreni to Tilandi" style="position: absolute; inset: 0">
+    <rect width="390" height="844" fill="#EEF2EC"/>
+    <path d="M-20 700 C80 650 140 690 230 640 C300 600 360 630 420 590" fill="none" stroke="#C9D3C2" stroke-width="1.2"/>
+    <path d="M-20 620 C70 580 150 610 220 560 C290 515 350 545 420 505" fill="none" stroke="#C9D3C2" stroke-width="1.2"/>
+    <path d="M-20 540 C60 505 140 530 210 480 C280 430 340 455 420 420" fill="none" stroke="#B9C6B1" stroke-width="1.6"/>
+    <path d="M-20 460 C60 430 130 450 200 400 C270 350 330 370 420 335" fill="none" stroke="#C9D3C2" stroke-width="1.2"/>
+    <path d="M-20 380 C50 355 120 370 190 320 C260 270 320 285 420 250" fill="none" stroke="#C9D3C2" stroke-width="1.2"/>
+    <path d="M-20 300 C40 280 110 290 180 245 C250 195 310 205 420 170" fill="none" stroke="#B9C6B1" stroke-width="1.6"/>
+    <path d="M-20 220 C40 205 100 210 170 170 C240 125 300 130 420 95" fill="none" stroke="#C9D3C2" stroke-width="1.2"/>
+    <path d="M40 0 C60 120 30 260 70 400 C90 470 60 560 80 700 C90 780 70 820 85 844" fill="none" stroke="#9BC1DE" stroke-width="2.5"/>
+    <path d="M110 690 C140 640 150 590 170 550 C190 510 230 495 240 450 C250 400 220 360 240 320 C260 280 300 260 310 220" fill="none" stroke="#1E4D40" stroke-width="5" stroke-linecap="round"/>
+    <path d="M110 690 C140 640 150 590 170 550 C190 515 215 500 225 485" fill="none" stroke="#E8A33D" stroke-width="5" stroke-linecap="round" stroke-dasharray="0.1 9"/>
+    <circle cx="110" cy="690" r="11" fill="#1E4D40"/>
+    <path d="M104 694 L110 683 L116 694 Z" fill="#FFFFFF"/>
+    <circle cx="310" cy="220" r="14" fill="#1E4D40"/>
+    <path d="M302 226 L310 211 L318 226 Z" fill="#FFFFFF"/>
+    <circle cx="86" cy="560" r="11" fill="#FFFFFF" stroke="#2D74B0" stroke-width="2.5"/>
+    <path d="M86 553 C89 557 91 560 91 563 A5 5 0 0 1 81 563 C81 560 83 557 86 553 Z" fill="#2D74B0"/>
+    <circle cx="240" cy="380" r="11" fill="#FBF1DE" stroke="#D39A3A" stroke-width="2.5"/>
+    <path d="M235 384 L240 375 L245 384" fill="none" stroke="#8A5A10" stroke-width="2"/>
+    <circle cx="225" cy="485" r="22" fill="#E8A33D" fill-opacity="0.22"/>
+    <circle cx="225" cy="485" r="10" fill="#E8A33D" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="326" y="250" font-family="Atkinson Hyperlegible, sans-serif" font-size="14" font-weight="700" fill="#15302A" text-anchor="end">Tilandi</text>
+    <text x="126" y="716" font-family="Atkinson Hyperlegible, sans-serif" font-size="14" font-weight="700" fill="#15302A">Gujreni</text>
+    <text x="102" y="584" font-family="Atkinson Hyperlegible, sans-serif" font-size="12" fill="#21639A">Stream</text>
+    <text x="256" y="384" font-family="Atkinson Hyperlegible, sans-serif" font-size="12" fill="#6B4E1C">Steep climb</text>
+    <text x="344" y="480" font-family="Atkinson Hyperlegible, sans-serif" font-size="11" fill="#7A8C82" text-anchor="end">10,000 ft</text>
+  </svg>
+
+  <header style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 20px 16px 0; gap: 10px">
+    <span style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: #FFFFFF; font-size: 14px; color: #2F6B4F; box-shadow: 0 1px 3px rgba(21,48,42,0.15)"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F8A5B"></span>Offline map · all good</span>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <button aria-label="Centre on me" style="width: 48px; height: 48px; border-radius: 24px; border: none; background: #FFFFFF; box-shadow: 0 1px 3px rgba(21,48,42,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15302A" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+      <button aria-label="Layers" style="width: 48px; height: 48px; border-radius: 24px; border: none; background: #FFFFFF; box-shadow: 0 1px 3px rgba(21,48,42,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15302A" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
+    </div>
+  </header>
+
+  <div style="flex: 1"></div>
+
+  <section style="position: relative; margin: 0 12px 10px; padding: 16px 18px 18px; border-radius: 24px; background: #FFFFFF; box-shadow: 0 -2px 12px rgba(21,48,42,0.12); display: flex; flex-direction: column; gap: 12px">
+    <span style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #CFDAD5"></span>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px">
+      <span style="font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif; font-weight: 700; font-size: 24px">To Tilandi</span>
+      <span style="font-size: 17px; font-weight: 700">about 3 h 10 min</span>
+    </div>
+    <span style="font-size: 15px; color: #4B6560">1.9 km left · you're at about 9,600 ft</span>
+    <div role="group" aria-label="Show on map" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+      <button aria-pressed="true" style="min-height: 48px; border-radius: 14px; border: 2px solid #2D74B0; background: #E6EFF6; color: #1C4E78; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Water</button>
+      <button aria-pressed="true" style="min-height: 48px; border-radius: 14px; border: 2px solid #1E4D40; background: #E7F1EC; color: #1E4D40; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Camps</button>
+      <button aria-pressed="true" style="min-height: 48px; border-radius: 14px; border: 2px solid #D39A3A; background: #FBF1DE; color: #6B4E1C; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Hazards</button>
+      <button aria-pressed="false" style="min-height: 48px; border-radius: 14px; border: 1px solid #C9D5D0; background: #FFFFFF; color: #4B6560; font-family: inherit; font-size: 14px; cursor: pointer">Network</button>
+    </div>
+  </section>
+
+  <nav aria-label="Trek view" style="position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #DCE5E1; background: #FFFFFF; padding: 8px 8px 24px">
+    <a href="main.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Now</a>
+    <a href="maptab.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #15302A; font-weight: 700; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15302A" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z" fill="#F5E0B5"/><path d="M9 4v14M15 6v14"/></svg>Map</a>
+    <a href="daytab.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Day</a>
+    <a href="looktab.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 19l6-9 4 5 3-4 7 8z"/><circle cx="17" cy="6" r="2"/></svg>Look</a>
+  </nav>
+</div>
+</div>
+<a class="proto-home" href="index.html">All screens</a>
+<script>
+// fit the 390 px design to narrower phones
+function fit(){var s=Math.min(1,window.innerWidth/390),f=document.getElementById('frame');f.style.transform='scale('+s+')';f.style.height=(f.scrollHeight*s)+'px';}
+window.addEventListener('resize',fit);fit();
+
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // Caches the playback page so it keeps working on the trail with no network.
-const CACHE = "mt-aryse-playback-v1";
+const CACHE = "mt-aryse-playback-v2";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon.svg"];
 
 self.addEventListener("install", (e) => {

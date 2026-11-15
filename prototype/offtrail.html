@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drifted off the trail · Mt. Aryse prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+html,body{margin:0;background:#DDE4E0}
+a{color:#1E4D40}a:hover{color:#123329}
+.frame{width:390px;margin:0 auto;transform-origin:top center}
+.proto-home{position:fixed;right:10px;bottom:10px;z-index:9;padding:8px 12px;border-radius:999px;background:rgba(21,48,42,.85);color:#fff;font:700 13px system-ui;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F2F5F3; color: #15302A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 8px; gap: 12px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <span style="font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B6560">Brahmatal · Day 3 of 6</span>
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #2F6B4F"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F8A5B"></span>Offline · all good</span>
+    </div>
+  </header>
+
+  <section role="alert" style="margin: 12px 16px 0; padding: 24px 20px; border-radius: 28px; background: #FBEBC8; border: 2px solid #D39A3A; display: flex; flex-direction: column; gap: 14px">
+    <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #7A4C08"><span style="width: 10px; height: 10px; border-radius: 50%; background: #D39A3A"></span>You may have drifted</span>
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="width: 96px; height: 96px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#7A4C08" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Arrow pointing left"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      </div>
+      <p style="margin: 0; font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif; font-weight: 700; font-size: 30px; line-height: 1.15; color: #3F2804">The trail is 50 m to your left</p>
+    </div>
+    <p style="margin: 0; font-size: 16px; color: #5C3D0A">No rush. Walk back towards the path and this will clear.</p>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap">
+      <button style="flex: 1; min-height: 52px; border-radius: 16px; border: none; background: #3F2804; color: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Show on map</button>
+      <a href="main.html" style="flex: 1; min-height: 52px; box-sizing: border-box; border-radius: 16px; border: 1px solid #C9A25A; background: #FFFFFF; color: #3F2804; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">I'm with my guide</a>
+    </div>
+  </section>
+
+  <section style="padding: 22px 20px 0; display: flex; flex-direction: column; gap: 4px; opacity: 0.55">
+    <span style="font-size: 16px; color: #4B6560">Next stop</span>
+    <span style="font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif; font-weight: 700; font-size: 36px; line-height: 1">Tilandi</span>
+    <span style="font-size: 20px">about 3 h 20 min</span>
+  </section>
+
+  <div style="flex: 1"></div>
+
+  <section style="padding: 0 20px 14px; display: flex; gap: 10px">
+    <button style="flex: 1; min-height: 52px; border-radius: 16px; border: 1px solid #C9D5D0; background: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 700; color: #15302A; cursor: pointer">I need help</button>
+    <button style="min-height: 52px; padding: 0 22px; border-radius: 16px; border: none; background: #B3261E; font-family: inherit; font-size: 16px; font-weight: 700; color: #FFFFFF; cursor: pointer">SOS</button>
+  </section>
+
+  <nav aria-label="Trek view" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #DCE5E1; background: #FFFFFF; padding: 8px 8px 24px">
+    <a href="main.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #15302A; font-weight: 700; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15302A" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="#E8A33D" stroke="none"/></svg>Now</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Map</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Day</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 19l6-9 4 5 3-4 7 8z"/><circle cx="17" cy="6" r="2"/></svg>Look</a>
+  </nav>
+</div>
+</div>
+<a class="proto-home" href="index.html">All screens</a>
+<script>
+// fit the 390 px design to narrower phones
+function fit(){var s=Math.min(1,window.innerWidth/390),f=document.getElementById('frame');f.style.transform='scale('+s+')';f.style.height=(f.scrollHeight*s)+'px';}
+window.addEventListener('resize',fit);fit();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Look tab · Peak finder · Mt. Aryse prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+html,body{margin:0;background:#DDE4E0}
+a{color:#1E4D40}a:hover{color:#123329}
+.frame{width:390px;margin:0 auto;transform-origin:top center}
+.proto-home{position:fixed;right:10px;bottom:10px;z-index:9;padding:8px 12px;border-radius:999px;background:rgba(21,48,42,.85);color:#fff;font:700 13px system-ui;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #22343A; color: #FFFFFF; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; position: relative; overflow: hidden">
+  <svg width="390" height="844" viewBox="0 0 390 844" role="img" aria-label="Camera view of the skyline with peak names drawn over it" style="position: absolute; inset: 0">
+    <rect width="390" height="844" fill="#7D99A6"/>
+    <rect y="0" width="390" height="300" fill="#9DB6C1"/>
+    <path d="M0 420 L40 390 L70 400 L110 330 L135 350 L170 250 L195 285 L215 270 L250 330 L280 315 L310 360 L350 345 L390 380 L390 844 L0 844 Z" fill="#E9EFF1"/>
+    <path d="M170 250 L188 276 L178 274 L170 290 L160 272 Z" fill="#C8D5DA"/>
+    <path d="M0 520 C80 490 160 505 240 480 C300 462 350 470 390 460 L390 844 L0 844 Z" fill="#5B7465"/>
+    <path d="M0 600 C90 580 170 590 260 570 C320 558 360 562 390 556 L390 844 L0 844 Z" fill="#3E5446"/>
+    <path d="M0 420 L40 390 L70 400 L110 330 L135 350 L170 250 L195 285 L215 270 L250 330 L280 315 L310 360 L350 345 L390 380" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>
+    <line x1="170" y1="250" x2="170" y2="196" stroke="#FFFFFF" stroke-width="1.5"/>
+    <line x1="110" y1="330" x2="110" y2="290" stroke="#FFFFFF" stroke-width="1.5"/>
+    <line x1="280" y1="315" x2="280" y2="276" stroke="#FFFFFF" stroke-width="1.5"/>
+  </svg>
+
+  <header style="position: relative; padding: 20px 16px 0; display: flex; flex-direction: column; gap: 12px">
+    <div role="tablist" aria-label="Look at" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 4px; border-radius: 16px; background: rgba(16,30,26,0.72)">
+      <a href="#" role="tab" aria-selected="true" style="min-height: 44px; border-radius: 12px; background: #FFFFFF; color: #15302A; font-weight: 700; font-size: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center">Peaks</a>
+      <a href="#" role="tab" style="min-height: 44px; border-radius: 12px; color: #FFFFFF; font-size: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center">Birds</a>
+      <a href="#" role="tab" style="min-height: 44px; border-radius: 12px; color: #FFFFFF; font-size: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center">Around me</a>
+    </div>
+  </header>
+
+  <div style="position: absolute; left: 118px; top: 150px; padding: 8px 12px; border-radius: 12px; background: rgba(16,30,26,0.82); display: flex; flex-direction: column; gap: 2px">
+    <span style="font-family: 'Bricolage Grotesque', 'Atkinson Hyperlegible', sans-serif; font-weight: 700; font-size: 20px">Trishul</span>
+    <span style="font-size: 13px; color: #D6E6DF">7,120 m · 23,360 ft</span>
+  </div>
+  <div style="position: absolute; left: 40px; top: 246px; padding: 6px 10px; border-radius: 10px; background: rgba(16,30,26,0.72); font-size: 14px; font-weight: 700">Nanda Ghunti</div>
+  <div style="position: absolute; left: 246px; top: 232px; padding: 6px 10px; border-radius: 10px; background: rgba(16,30,26,0.72); font-size: 14px">Ridge, no name</div>
+
+  <div style="flex: 1"></div>
+
+  <section style="position: relative; margin: 0 12px 10px; padding: 16px; border-radius: 22px; background: rgba(16,30,26,0.86); display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12h8M12 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+      <span style="font-size: 16px; line-height: 1.35">Does the line sit on the real ridge? If not, drag the picture sideways until it does.</span>
+    </div>
+    <div style="display: flex; gap: 10px">
+      <button style="flex: 1; min-height: 48px; border-radius: 14px; border: none; background: #FFFFFF; color: #15302A; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Save photo with names</button>
+      <button aria-label="About Trishul" style="min-height: 48px; padding: 0 16px; border-radius: 14px; border: 1px solid #6E857E; background: transparent; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">About Trishul</button>
+    </div>
+  </section>
+
+  <nav aria-label="Trek view" style="position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #DCE5E1; background: #FFFFFF; padding: 8px 8px 24px">
+    <a href="main.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Now</a>
+    <a href="maptab.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Map</a>
+    <a href="daytab.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #5D746F; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5D746F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Day</a>
+    <a href="looktab.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; text-decoration: none; color: #15302A; font-weight: 700; font-size: 13px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15302A" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 19l6-9 4 5 3-4 7 8z" fill="#F5E0B5"/><circle cx="17" cy="6" r="2"/></svg>Look</a>
+  </nav>
+</div>
+</div>
+<a class="proto-home" href="index.html">All screens</a>
+<script>
+// fit the 390 px design to narrower phones
+function fit(){var s=Math.min(1,window.innerWidth/390),f=document.getElementById('frame');f.style.transform='scale('+s+')';f.style.height=(f.scrollHeight*s)+'px';}
+window.addEventListener('resize',fit);fit();
+
+</script>
+</body>
+</html>
