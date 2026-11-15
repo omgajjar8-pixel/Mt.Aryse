@@ -1807,7 +1807,7 @@ function feedbackSheet(afterTrail) {
       const seen = S.visited.filter((v) => !["install"].includes(v)).join(", ");
       return `Mt. Aryse feedback${name ? ` from ${name}` : ""}\nEase of use: ${rating ? rating + "/5" : "not rated"}\nRole: ${who || "not said"}\n\n${txt || "(no comments)"}\n\nScreens tried: ${seen}\nPhone: ${navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || "unknown"}`;
     };
-    sh.querySelector("#fb-send").addEventListener("click", () => { window.open("https://wa.me/?text=" + encodeURIComponent(compose()), "_blank"); closeSheet(); toast("Thank you. This really helps."); });
+    sh.querySelector("#fb-send").addEventListener("click", () => { window.open("https://wa.me/919898667761?text=" + encodeURIComponent(compose()), "_blank"); closeSheet(); toast("Thank you. This really helps."); });
     sh.querySelector("#fb-copy").addEventListener("click", async () => {
       try { await navigator.clipboard.writeText(compose()); toast("Copied. Paste it in any chat."); } catch (e) { toast("Couldn't copy on this phone", "info"); }
     });
